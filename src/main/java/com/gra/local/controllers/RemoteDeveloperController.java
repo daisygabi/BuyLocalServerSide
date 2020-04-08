@@ -1,9 +1,9 @@
-package com.remote.developers.controllers;
+package com.gra.local.controllers;
 
-import com.remote.developers.persistence.EntityHelper;
-import com.remote.developers.persistence.domain.RemoteDeveloper;
-import com.remote.developers.persistence.services.RemoteDevelopersService;
-import com.remote.developers.persistence.services.dtos.RemoteDeveloperDto;
+import com.gra.local.persistence.EntityHelper;
+import com.gra.local.persistence.domain.RemoteDeveloper;
+import com.gra.local.persistence.services.RemoteDevelopersService;
+import com.gra.local.persistence.services.dtos.RemoteDeveloperDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.remote.developers.persistence.services.dtos;
+package com.gra.local.persistence.services.dtos;
 
 import lombok.Getter;
 import lombok.Setter;

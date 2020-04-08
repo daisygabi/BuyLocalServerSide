@@ -1,4 +1,4 @@
-package com.remote.developers.persistence.domain;
+package com.gra.local.persistence.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;

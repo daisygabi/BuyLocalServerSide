@@ -1,6 +1,6 @@
-package com.remote.developers.persistence.repositories;
+package com.gra.local.persistence.repositories;
 
-import com.remote.developers.persistence.domain.RemoteDeveloper;
+import com.gra.local.persistence.domain.RemoteDeveloper;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

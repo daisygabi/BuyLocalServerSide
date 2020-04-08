@@ -1,8 +1,8 @@
-package com.remote.developers.persistence.services;
+package com.gra.local.persistence.services;
 
-import com.remote.developers.exceptions.CustomException;
-import com.remote.developers.persistence.domain.RemoteDeveloper;
-import com.remote.developers.persistence.repositories.RemoteDevelopersRepository;
+import com.gra.local.exceptions.CustomException;
+import com.gra.local.persistence.repositories.RemoteDevelopersRepository;
+import com.gra.local.persistence.domain.RemoteDeveloper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

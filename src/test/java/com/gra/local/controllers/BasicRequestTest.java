@@ -1,6 +1,6 @@
-package com.remote.developers.controllers;
+package com.gra.local.controllers;
 
-import com.remote.developers.TemplateProjectApplication;
+import com.gra.local.BuyLocalApplication;
 import org.flywaydb.core.Flyway;
 import org.flywaydb.test.FlywayTestExecutionListener;
 import org.junit.Before;
@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Base class to be used for entire rest tests suits
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = TemplateProjectApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = BuyLocalApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestExecutionListeners(listeners = {FlywayTestExecutionListener.class})
 @ActiveProfiles("test")
 @Transactional

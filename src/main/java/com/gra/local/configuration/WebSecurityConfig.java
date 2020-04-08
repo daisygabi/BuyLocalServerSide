@@ -1,4 +1,4 @@
-package com.remote.developers.configuration;
+package com.gra.local.configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -33,7 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // Entry points
         http.authorizeRequests()//
                 .antMatchers(HttpMethod.OPTIONS, "**").permitAll()
-                .antMatchers("/api/v1/developers").permitAll()
+                .antMatchers("/api/v1/").permitAll()
 
                 // Disallow everything else
                 .anyRequest().authenticated();

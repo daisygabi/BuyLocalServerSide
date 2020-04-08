@@ -1,4 +1,4 @@
-package com.remote.developers.exceptions;
+package com.gra.local.exceptions;
 
 import org.springframework.http.HttpStatus;
 

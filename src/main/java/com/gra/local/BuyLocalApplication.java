@@ -1,4 +1,4 @@
-package com.remote.developers;
+package com.gra.local;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
@@ -8,12 +8,12 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @SpringBootApplication
 @EnableJpaAuditing
-public class TemplateProjectApplication {
+public class BuyLocalApplication {
 
     @Bean
     public ModelMapper modelMapper() { return new ModelMapper(); }
 
     public static void main(String[] args) {
-        SpringApplication.run(TemplateProjectApplication.class, args);
+        SpringApplication.run(BuyLocalApplication.class, args);
     }
 }

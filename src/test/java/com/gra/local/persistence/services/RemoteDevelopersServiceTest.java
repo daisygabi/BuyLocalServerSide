@@ -1,7 +1,7 @@
-package com.remote.developers.persistence.services;
+package com.gra.local.persistence.services;
 
-import com.remote.developers.persistence.domain.RemoteDeveloper;
-import com.remote.developers.persistence.repositories.RemoteDevelopersRepository;
+import com.gra.local.persistence.domain.RemoteDeveloper;
+import com.gra.local.persistence.repositories.RemoteDevelopersRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

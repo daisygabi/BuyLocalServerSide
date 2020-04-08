@@ -1,7 +1,7 @@
-package com.remote.developers.controllers;
+package com.gra.local.controllers;
 
-import com.remote.developers.persistence.domain.RemoteDeveloper;
-import com.remote.developers.persistence.services.dtos.RemoteDeveloperDto;
+import com.gra.local.persistence.domain.RemoteDeveloper;
+import com.gra.local.persistence.services.dtos.RemoteDeveloperDto;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
