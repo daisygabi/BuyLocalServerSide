@@ -1,0 +1,21 @@
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+.idea/libraries
+.idea/dataSources
+*.iws
+*.iml
+*.ipr
+
+/target/
+!.mvn/wrapper/maven-wrapper.jar
+
+/src/main/resources/application.properties
