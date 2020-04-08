@@ -8,7 +8,7 @@ Requirements:
 - A data scheme already created with name: postgres
 
 Steps for getting started with it in Windows:
-1. git clone https://github.com/gabrielaradu/MyTemplateWithSpringAndPersistence.git
+1. git clone https://github.com/gabrielaradu/BuyLocalServerSide.git
 2. Add env variables for:
   REMOTEDEV_M_DB_SERVER: localhost
   REMOTEDEV_M_DB_USER: postgres
@@ -16,7 +16,7 @@ Steps for getting started with it in Windows:
   REMOTEDEV_M_DB_PORT: 5433
 3. Import/Open your project in your editor
 4. Create SpringBoot application config with below details if you want to run the project from outside of a command line
-  - Main Class: com.remote.developers.TemplateProjectApplication
+  - Main Class: BuyLocalApplication
   - JRE: 11 (at least)
   - For more information on how to create more development environments in the project checkout this post: https://dev.to/gabriela/spring-boot-rest-api-and-flyway-migrations-a3a
 5. Try running the unit tests and the integration tests that already exist. They should pass, by the way :)
