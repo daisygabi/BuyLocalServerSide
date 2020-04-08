@@ -8,11 +8,11 @@
         <version>2.2.2.RELEASE</version>
         <relativePath/> <!-- lookup parent from persistence -->
     </parent>
-    <groupId>com.remote.developers</groupId>
-    <artifactId>TemplateProject</artifactId>
+    <groupId>com.gra.local</groupId>
+    <artifactId>BuyLocal</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>TemplateProject</name>
-    <description>TemplateProject with SpringBoot, Flyway, PostgreSql</description>
+    <name>Buy Local Food</name>
+    <description>BuyLocal project to help local vendors sell online their produce</description>
 
     <properties>
         <java.version>1.10</java.version>
