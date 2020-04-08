@@ -1,7 +1,5 @@
-# MyTemplateWithSpringAndPersistence
-Template project with SpringBoot, Flyway, Postgreqsql
+# Buy Local project during the April hackaton from Twilio
 
-This projects' soul purpose is to have a base to create a SpringBoot, Flyway project in a couple of minutes.
 Requirements:
 - Java installed. I used Java 11
 - Postgresql driver installed
