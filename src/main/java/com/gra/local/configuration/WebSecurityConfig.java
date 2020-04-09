@@ -33,13 +33,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // Entry points
         http.authorizeRequests()//
                 .antMatchers(HttpMethod.OPTIONS, "**").permitAll()
-                .antMatchers("/api/v1/").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/v1/account").permitAll() // create vendor account
 
                 // Disallow everything else
                 .anyRequest().authenticated();
 
         // Optional, if you want to test the API from a browser
         http.httpBasic();
+
+        // If a user try to access a resource without having enough permissions
+        http.exceptionHandling().accessDeniedPage("/api/v1/");
     }
 
     @Override
