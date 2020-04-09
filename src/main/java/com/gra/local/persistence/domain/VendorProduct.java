@@ -23,5 +23,8 @@ public class VendorProduct extends DefaultDomain {
 
     @Column(columnDefinition = "max_quantity_per_order")
     private Double maxQuantityPerOrder;
+
+    @Column(columnDefinition = "quantity_type")
+    private int quantityType;
 }
 

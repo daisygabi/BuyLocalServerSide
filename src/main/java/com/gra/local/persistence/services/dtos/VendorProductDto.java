@@ -1,5 +1,6 @@
 package com.gra.local.persistence.services.dtos;
 
+import com.gra.local.persistence.domain.QuantityType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,4 +12,5 @@ public class VendorProductDto {
     private String name;
     private Double minQuantityPerOrder;
     private Double maxQuantityPerOrder;
+    private int quantityTypeId;
 }
