@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = BuyLocalApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestExecutionListeners(listeners = {FlywayTestExecutionListener.class})
-@ActiveProfiles("test")
+@ActiveProfiles("dev")
 @Transactional
 public abstract class BasicRequestTest extends AbstractTransactionalJUnit4SpringContextTests {
 
