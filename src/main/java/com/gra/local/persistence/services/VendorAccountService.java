@@ -13,7 +13,7 @@ public class VendorAccountService {
     private VendorAccountRepository vendorAccountRepository;
 
     @Autowired
-    public void setUserRepository(VendorAccountRepository vendorAccountRepository) {
+    public void setVendorAccountService(VendorAccountRepository vendorAccountRepository) {
         this.vendorAccountRepository = vendorAccountRepository;
     }
 
