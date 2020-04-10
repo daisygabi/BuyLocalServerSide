@@ -6,7 +6,8 @@ public enum QuantityType implements GrantedAuthority {
     GRAMS("Grams", 0),
     KG("Kg", 1),
     Miligrams("ml", 2),
-    Liter("L", 3);
+    Liter("L", 3),
+    ITEM("item", 4);
 
     private String name;
     private int index;
