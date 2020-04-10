@@ -14,12 +14,12 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 @RunWith(SpringRunner.class)
@@ -46,6 +46,7 @@ public class VendorProductsServiceTest {
         vendorProductDto.setQuantityTypeId(QuantityType.GRAMS.getIndex());
 
         vendorProductToUpdateDto = new VendorProductDto();
+        vendorProductDto.setId(1L);
         vendorProductToUpdateDto.setName("Letuce is nicely edited");
         vendorProductToUpdateDto.setMinQuantityPerOrder(0.5);
         vendorProductToUpdateDto.setMaxQuantityPerOrder(12.0);
@@ -75,22 +76,19 @@ public class VendorProductsServiceTest {
 
     @Test
     public void updateProduct_always_updates_the_given_product_and_returns_it() {
-        AtomicReference<VendorProduct> updatedProduct = new AtomicReference<>();
-        when(repository.update(argThat((productToUpdate) -> {
-            assertEquals(vendorProductToUpdateDto.getName(), eq("Letuce is nicely edited"));
-            assertEquals(Double.valueOf("0.5"), productToUpdate.getMinQuantityPerOrder());
-            assertEquals(Double.valueOf("12.0"), productToUpdate.getMaxQuantityPerOrder());
-            assertEquals(String.valueOf(QuantityType.KG.getIndex()), productToUpdate.getQuantityTypeId());
+        AtomicReference<VendorProduct> foundExistingProduct = new AtomicReference<>();
+        when(repository.findAllById(argThat(idToFind -> {
+            assertEquals(1L, idToFind);
             return false;
         }))).thenAnswer(invocationOnMock -> {
-            VendorProduct productToUpdate = invocationOnMock.getArgument(0);
-            updatedProduct.set(productToUpdate);
-            return productToUpdate;
+            Optional<VendorProduct> productToSaveOptional = invocationOnMock.getArgument(0);
+            foundExistingProduct.set(productToSaveOptional.get());
+            return productToSaveOptional.get();
         });
 
-        VendorProduct result = subject.update(vendorProductToUpdateDto);
+        subject.update(vendorProductToUpdateDto);
 
-        assertSame(updatedProduct.get(), result);
+        verify(repository).findById(vendorProductToUpdateDto.getId());
     }
 
     @Test

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/account")
 public class VendorAccountController {
 
     private VendorAccountService vendorAccountService;
@@ -24,7 +24,7 @@ public class VendorAccountController {
         this.vendorAccountService = vendorAccountService;
     }
 
-    @PostMapping("/account")
+    @PostMapping("/")
     public ResponseEntity<?> createAccount(@Valid @RequestBody VendorAccountDto accountDto) {
         VendorAccount createdVendorAccount = vendorAccountService.save(accountDto);
         return createdVendorAccount != null ? ResponseEntity.ok(EntityHelper.convertToAbstractDto(createdVendorAccount, VendorAccountDto.class)) : ResponseEntity.badRequest().build();

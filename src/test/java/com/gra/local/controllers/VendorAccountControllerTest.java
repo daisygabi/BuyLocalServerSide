@@ -19,7 +19,7 @@ public class VendorAccountControllerTest extends BasicRequestTest {
         vendorAccountDto.setEmail("demo@email.com");
         vendorAccountDto.setPhone("+30009990999");
 
-        ResponseEntity<VendorAccount> postResponse = getRestTemplate().postForEntity(getRootUrl() + "/account", vendorAccountDto, VendorAccount.class);
+        ResponseEntity<VendorAccount> postResponse = getRestTemplate().postForEntity(getRootUrl() + "/account/", vendorAccountDto, VendorAccount.class);
         assertEquals(HttpStatus.OK, postResponse.getStatusCode());
         assertNotNull(postResponse.getBody());
     }

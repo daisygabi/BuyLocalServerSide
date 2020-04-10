@@ -33,10 +33,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // Entry points
         http.authorizeRequests()//
                 .antMatchers(HttpMethod.OPTIONS, "**").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/v1/account").permitAll() // create vendor account
+                .antMatchers(HttpMethod.POST, "/api/v1/account/").permitAll() // create vendor account
                 // Products
                 .antMatchers(HttpMethod.POST, "/api/v1/products/").permitAll() // add a product
                 .antMatchers(HttpMethod.PUT, "/api/v1/products/").permitAll() // update product details
+                .antMatchers(HttpMethod.DELETE, "/api/v1/products/").permitAll() // delete product
 
                 // Disallow everything else
                 .anyRequest().authenticated();
