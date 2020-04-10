@@ -7,16 +7,11 @@ import com.gra.local.persistence.services.dtos.VendorProductDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 public class VendorProductsService {
-
-    @PersistenceContext
-    private EntityManager entityManager;
 
     private VendorProductsRepository vendorProductsRepository;
 
