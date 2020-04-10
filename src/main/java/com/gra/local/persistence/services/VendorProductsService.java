@@ -24,15 +24,12 @@ public class VendorProductsService {
         return getVendorProductsRepository().save(EntityHelper.convertToAbstractEntity(dto, VendorProduct.class));
     }
 
-    public VendorProduct update(VendorProductDto dto) {
-        Optional<VendorProduct> optionalProduct = getVendorProductsRepository().findByNameAnd(dto.getName(), 1);
-        AtomicReference<VendorProduct> updatedProduct = new AtomicReference<>();
-
+    public void update(VendorProductDto dto) {
+        Optional<VendorProduct> optionalProduct = getVendorProductsRepository().findById(dto.getId());
         optionalProduct.ifPresent(product -> {
             dto.setId(product.getId());
             getVendorProductsRepository().update(dto);
         });
-        return updatedProduct.get();
     }
 
     public void delete(Long productId) {
