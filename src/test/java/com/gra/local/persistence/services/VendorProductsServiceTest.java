@@ -14,7 +14,6 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.persistence.EntityManager;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.Assert.assertEquals;
@@ -32,9 +31,6 @@ public class VendorProductsServiceTest {
 
     @Mock
     private VendorProductsRepository repository;
-
-    @Mock
-    private EntityManager entityManager;
 
     private VendorProductDto vendorProductDto;
     private VendorProductDto vendorProductToUpdateDto;
