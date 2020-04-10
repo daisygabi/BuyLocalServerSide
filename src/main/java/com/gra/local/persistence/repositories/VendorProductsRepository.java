@@ -15,6 +15,6 @@ public interface VendorProductsRepository extends JpaRepository<VendorProduct, L
     @Query("SELECT product FROM VendorProduct product where product.name = ?1 and product.quantityType = ?2")
     Optional<VendorProduct> findByNameAnd(String name, int quantityTypeId);
 
-    @Query("UPDATE VendorProduct product SET product.name= :#{product.name}, product.minQuantityPerOrder= :#{product.minQuantityPerOrder}, product.maxQuantityPerOrder=  :#{product.maxQuantityPerOrder}, product.quantityType =  :#{product.quantityType} WHERE product.id = :#{product.id}")
+    @Query("UPDATE VendorProduct product SET product.name= :#{#product.name}, product.minQuantityPerOrder= :#{#product.minQuantityPerOrder}, product.maxQuantityPerOrder=  :#{#product.maxQuantityPerOrder}, product.quantityType =  :#{#product.quantityType} WHERE product.id = :#{#product.id}")
     VendorProduct update(@Param("product") VendorProductDto product);
 }
