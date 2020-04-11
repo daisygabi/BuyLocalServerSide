@@ -1,13 +1,10 @@
 package com.gra.local.persistence.services;
 
 import com.gra.local.exceptions.CustomException;
-import com.twilio.Twilio;
-import com.twilio.exception.TwilioException;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.rest.api.v2010.account.MessageCreator;
 import com.twilio.rest.lookups.v1.PhoneNumber;
 import com.twilio.rest.lookups.v1.PhoneNumberFetcher;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
 /**
@@ -15,8 +12,11 @@ import org.springframework.http.HttpStatus;
  */
 public class TwilioSmsApiWrapper {
 
-    @Autowired
     private TwilioRestClientWrapper twilioRestClientWrapper;
+
+    public TwilioSmsApiWrapper() {
+        twilioRestClientWrapper = new TwilioRestClientWrapper();
+    }
 
     public PhoneNumberFetcher createPhoneNumberFetcher(String phoneNumber) {
         return PhoneNumber.fetcher(new com.twilio.type.PhoneNumber(phoneNumber)).setType("carrier");
@@ -31,6 +31,4 @@ public class TwilioSmsApiWrapper {
             throw new CustomException("An exception occurred trying to send a message to: " + to + " from: " + from, HttpStatus.UNAUTHORIZED, e);
         }
     }
-
-
 }

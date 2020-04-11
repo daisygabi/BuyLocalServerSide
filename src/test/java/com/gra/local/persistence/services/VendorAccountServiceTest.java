@@ -85,4 +85,36 @@ public class VendorAccountServiceTest {
 
         verify(mockedPhoneNumberFetcher).fetch();
     }
+
+    @Test
+    public void saveVerificationCode_always_updates_code_and_verified_status_for_given_code_and_number() {
+        String code = "asdad";
+        String phone = "+1214234325";
+        VendorAccount account = new VendorAccount();
+        account.setPhone(phone);
+        account.setEmail("asda@sadas.com");
+        account.setVerifyingCode(code);
+
+        when(repository.updateVerificationCodeAndStatus(code, phone)).thenReturn(java.util.Optional.of(account));
+        VendorAccount updatedAccount = subject.saveVerificationCode(code, phone);
+
+        assertEquals(updatedAccount.getVerifyingCode(), code);
+    }
+
+    @Test
+    public void checkIfVendorPhoneNumberIsVerified_always_returns_true_if_verified_status_is_false() {
+        String code = "asdad";
+        String phone = "+1214234325";
+
+        VendorAccount account = new VendorAccount();
+        account.setPhone(phone);
+        account.setEmail("asda@sadas.com");
+        account.setVerifyingCode(code);
+        account.setVerified(true);
+
+        when(repository.checkIfVendorPhoneNumberIsVerified(phone)).thenReturn(java.util.Optional.of(account));
+        boolean validPhoneNumber = subject.checkIfVendorPhoneNumberIsVerified(phone);
+
+        assertEquals(validPhoneNumber, Boolean.TRUE);
+    }
 }
