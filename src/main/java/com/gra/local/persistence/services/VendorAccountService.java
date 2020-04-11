@@ -39,6 +39,10 @@ public class VendorAccountService {
         }
     }
 
+    public boolean checkIfVendorPhoneNumberIsVerified(String toNumber) {
+        return getVendorAccountRepository().checkIfVendorPhoneNumberIsVerified(toNumber).get().isVerified();
+    }
+
     @Autowired
     public void setVendorAccountService(VendorAccountRepository vendorAccountRepository) {
         this.vendorAccountRepository = vendorAccountRepository;
@@ -53,6 +57,6 @@ public class VendorAccountService {
     }
 
     public TwilioSmsApiWrapper getTwilioSmsApiWrapper() {
-        return twilioSmsApiWrapper != null ? twilioSmsApiWrapper : getTwilioSmsApiWrapper();
+        return twilioSmsApiWrapper != null ? twilioSmsApiWrapper : new TwilioSmsApiWrapper();
     }
 }

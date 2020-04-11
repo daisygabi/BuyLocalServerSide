@@ -26,5 +26,11 @@ public class VendorAccount extends DefaultDomain {
 
     @Column(columnDefinition = "city")
     private String city;
+
+    @Column(columnDefinition = "verified")
+    private boolean verified;
+
+    @Column(columnDefinition = "verifying_code")
+    private String verifyingCode;
 }
 

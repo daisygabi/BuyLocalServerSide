@@ -34,8 +34,12 @@ public class VendorAccountController {
     }
 
     @PostMapping("/verifyAccount/{toNumber}")
-    public ResponseEntity<Boolean> sendValidationSMSCodeToVendor(@Valid @PathVariable("toNumber") String toNumber, @Valid @RequestBody String message) {
-        boolean smsSent = vendorAccountService.sendValidationSMSCodeToVendor(toNumber, message);
-        return smsSent ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
+    public ResponseEntity<Boolean> verifyAccount(@Valid @PathVariable("toNumber") String toNumber, @Valid @RequestBody String message) {
+        // Check if the vendor is not already verified before sending SMS
+        if (!vendorAccountService.checkIfVendorPhoneNumberIsVerified(toNumber)) {
+            boolean smsSent = vendorAccountService.sendValidationSMSCodeToVendor(toNumber, message);
+            return smsSent ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.badRequest().build();
     }
 }

@@ -2,9 +2,14 @@ package com.gra.local.persistence.repositories;
 
 import com.gra.local.persistence.domain.VendorAccount;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 
 @Repository
 public interface VendorAccountRepository extends JpaRepository<VendorAccount, Long> {
 
+    @Query("SELECT account FROM VendorAccount account where account.phone = ?1")
+    Optional<VendorAccount> checkIfVendorPhoneNumberIsVerified(String phoneNumber);
 }
