@@ -5,6 +5,7 @@ import com.gra.local.persistence.EntityHelper;
 import com.gra.local.persistence.domain.VendorAccount;
 import com.gra.local.persistence.repositories.VendorAccountRepository;
 import com.gra.local.persistence.services.dtos.VendorAccountDto;
+import com.gra.local.utils.CodeGeneration;
 import com.twilio.rest.lookups.v1.PhoneNumber;
 import com.twilio.rest.lookups.v1.PhoneNumberFetcher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +40,21 @@ public class VendorAccountService {
         }
     }
 
+    public VendorAccount saveVerificationCode(final String code, final String accountPhoneNumber) {
+        return getVendorAccountRepository().updateVerificationCodeAndStatus(code, accountPhoneNumber).get();
+    }
+
     public boolean checkIfVendorPhoneNumberIsVerified(String toNumber) {
         return getVendorAccountRepository().checkIfVendorPhoneNumberIsVerified(toNumber).get().isVerified();
+    }
+
+    public boolean verifyAccount(final String phoneNumber) {
+        String createVerificationCode = new CodeGeneration().createVerificationCode();
+        boolean smsSent = sendValidationSMSCodeToVendor(phoneNumber, createVerificationCode);
+        if (smsSent) {
+            saveVerificationCode(createVerificationCode, phoneNumber);
+        }
+        return smsSent;
     }
 
     @Autowired
