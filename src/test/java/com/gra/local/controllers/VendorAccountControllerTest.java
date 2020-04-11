@@ -17,6 +17,7 @@ public class VendorAccountControllerTest extends BasicRequestTest {
         vendorAccountDto.setCity("Sibiu");
         vendorAccountDto.setEmail("demo@email.com");
         vendorAccountDto.setPhone("+30009990999");
+        vendorAccountDto.setVerified(false);
 
         ResponseEntity<VendorAccount> postResponse = getRestTemplate().postForEntity(getRootUrl() + "/account/", vendorAccountDto, VendorAccount.class);
         assertEquals(HttpStatus.OK, postResponse.getStatusCode());
@@ -33,9 +34,19 @@ public class VendorAccountControllerTest extends BasicRequestTest {
 
     @Test
     public void testVerifyAccount_usingTwilio_API_bySendingSMS_shouldReturn_StatusOK() {
-        String to = System.getenv("TWILIO_RECEIVER_TEST_PHONE_NR");
+        String number = "+30009990999";
         String message = "Demo message";
-        ResponseEntity<Boolean> postResponse = getRestTemplate().postForEntity(getRootUrl() + "/account/verifyAccount/" + to, message, Boolean.class);
+
+        VendorAccountDto vendorAccountDto = new VendorAccountDto();
+        vendorAccountDto.setName("Basil");
+        vendorAccountDto.setCity("Sibiu");
+        vendorAccountDto.setEmail("TEST@email.com");
+        vendorAccountDto.setPhone(number);
+        vendorAccountDto.setVerified(false);
+
+        ResponseEntity<VendorAccount> saveResponse = getRestTemplate().postForEntity(getRootUrl() + "/account/", vendorAccountDto, VendorAccount.class);
+
+        ResponseEntity<Boolean> postResponse = getRestTemplate().postForEntity(getRootUrl() + "/account/verifyAccount/" + number, message, Boolean.class);
         assertEquals(HttpStatus.OK, postResponse.getStatusCode());
         assertTrue(String.valueOf(postResponse), Boolean.TRUE);
     }

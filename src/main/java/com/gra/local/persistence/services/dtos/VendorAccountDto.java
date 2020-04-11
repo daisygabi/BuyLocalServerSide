@@ -12,4 +12,5 @@ public class VendorAccountDto {
     private String phone;
     private String email;
     private String city;
+    private boolean verified;
 }
