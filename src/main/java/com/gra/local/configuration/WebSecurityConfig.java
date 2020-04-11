@@ -34,6 +34,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()//
                 .antMatchers(HttpMethod.OPTIONS, "**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/v1/account/").permitAll() // create vendor account
+                .antMatchers(HttpMethod.POST, "/api/v1/account/validate/**").permitAll() // validate vendor account
+                .antMatchers(HttpMethod.POST, "/api/v1/account/verifyAccount/**").permitAll() // verify vendor account phone number
                 // Products
                 .antMatchers(HttpMethod.POST, "/api/v1/products/").permitAll() // add a product
                 .antMatchers(HttpMethod.PUT, "/api/v1/products/").permitAll() // update product details

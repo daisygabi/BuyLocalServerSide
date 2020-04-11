@@ -3,23 +3,23 @@ package com.gra.local.persistence.services;
 import com.gra.local.persistence.domain.VendorAccount;
 import com.gra.local.persistence.repositories.VendorAccountRepository;
 import com.gra.local.persistence.services.dtos.VendorAccountDto;
+import com.twilio.rest.lookups.v1.PhoneNumber;
+import com.twilio.rest.lookups.v1.PhoneNumberFetcher;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
-@RunWith(SpringRunner.class)
 @ActiveProfiles("dev")
 public class VendorAccountServiceTest {
 
@@ -28,6 +28,12 @@ public class VendorAccountServiceTest {
 
     @Mock
     private VendorAccountRepository repository;
+
+    @Mock
+    private TwilioSmsApiWrapper twilioSmsApiWrapper;
+
+    @Mock
+    private PhoneNumberFetcher mockedPhoneNumberFetcher;
 
     private VendorAccountDto vendorAccountDto;
 
@@ -40,6 +46,10 @@ public class VendorAccountServiceTest {
         vendorAccountDto.setCity("Sibiu");
         vendorAccountDto.setEmail("demo@email.com");
         vendorAccountDto.setPhone("+30009990999");
+
+        subject.setTwilioSmsApiWrapper(twilioSmsApiWrapper);
+
+        when(twilioSmsApiWrapper.createPhoneNumberFetcher(any())).thenReturn(mockedPhoneNumberFetcher);
     }
 
     @Test
@@ -61,5 +71,18 @@ public class VendorAccountServiceTest {
         VendorAccount result = subject.save(vendorAccountDto);
 
         assertSame(savedVendorAccount.get(), result);
+    }
+
+    @Test
+    public void validatePhoneNumber_always_creates_a_phone_number_fetcher_for_the_given_string() {
+        String number = "+125435346";
+        PhoneNumber mockedPhoneNumber = mock(PhoneNumber.class);
+
+        when(twilioSmsApiWrapper.createPhoneNumberFetcher(number)).thenReturn(mockedPhoneNumberFetcher);
+        when(mockedPhoneNumberFetcher.fetch()).thenReturn(mockedPhoneNumber);
+
+        subject.validatePhoneNumber(number);
+
+        verify(mockedPhoneNumberFetcher).fetch();
     }
 }

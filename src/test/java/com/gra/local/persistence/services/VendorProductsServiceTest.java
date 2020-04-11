@@ -1,6 +1,5 @@
 package com.gra.local.persistence.services;
 
-
 import com.gra.local.persistence.domain.QuantityType;
 import com.gra.local.persistence.domain.VendorProduct;
 import com.gra.local.persistence.repositories.VendorProductsRepository;
@@ -22,7 +21,6 @@ import static org.junit.Assert.assertSame;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.*;
 
-@RunWith(SpringRunner.class)
 @ActiveProfiles("dev")
 public class VendorProductsServiceTest {
 
