@@ -48,6 +48,10 @@ public class VendorAccountService {
         return getVendorAccountRepository().checkIfVendorPhoneNumberIsVerified(toNumber).get().isVerified();
     }
 
+    public boolean verifyCode(String code) {
+        return getVendorAccountRepository().findByCode(code).isPresent();
+    }
+
     public boolean verifyAccount(final String phoneNumber) {
         String createVerificationCode = new CodeGeneration().createVerificationCode();
         boolean smsSent = sendValidationSMSCodeToVendor(phoneNumber, createVerificationCode);

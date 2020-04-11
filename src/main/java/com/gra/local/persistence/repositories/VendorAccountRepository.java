@@ -20,4 +20,7 @@ public interface VendorAccountRepository extends JpaRepository<VendorAccount, Lo
     @Modifying
     @Query("UPDATE VendorAccount account SET account.verified = true, account.verifyingCode= :code WHERE account.phone = :phoneNumber")
     Optional<VendorAccount> updateVerificationCodeAndStatus(@Param("code") String code, @Param("phoneNumber") String phoneNumber);
+
+    @Query("SELECT account FROM VendorAccount account where account.verifyingCode = ?1 and account.verified = true")
+    Optional<VendorAccount> findByCode(String code);
 }
