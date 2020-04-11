@@ -41,4 +41,13 @@ public class VendorAccountController {
         }
         return ResponseEntity.badRequest().build();
     }
+
+    @GetMapping("/confirmCode/{code}")
+    public ResponseEntity<Boolean> confirmCode(@Valid @PathVariable("code") String code) {
+        boolean verifyCode = vendorAccountService.verifyCode(code);
+        if (verifyCode) {
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.badRequest().build();
+    }
 }

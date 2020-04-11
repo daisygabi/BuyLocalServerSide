@@ -117,4 +117,21 @@ public class VendorAccountServiceTest {
 
         assertEquals(validPhoneNumber, Boolean.TRUE);
     }
+
+    @Test
+    public void verifyCode_always_returns_true_if_verified_code_exists() {
+        String code = "asdad";
+        String phone = "+1214234325";
+
+        VendorAccount account = new VendorAccount();
+        account.setPhone(phone);
+        account.setEmail("asda@sadas.com");
+        account.setVerifyingCode(code);
+        account.setVerified(true);
+
+        when(repository.findByCode(code)).thenReturn(java.util.Optional.of(account));
+        boolean validPhoneNumber = subject.verifyCode(code);
+
+        assertEquals(validPhoneNumber, Boolean.TRUE);
+    }
 }
