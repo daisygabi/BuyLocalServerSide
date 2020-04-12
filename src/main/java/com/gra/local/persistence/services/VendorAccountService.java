@@ -1,22 +1,33 @@
 package com.gra.local.persistence.services;
 
+import com.gra.local.configuration.JwtTokenProvider;
 import com.gra.local.exceptions.CustomException;
 import com.gra.local.persistence.EntityHelper;
 import com.gra.local.persistence.domain.VendorAccount;
 import com.gra.local.persistence.repositories.VendorAccountRepository;
 import com.gra.local.persistence.services.dtos.VendorAccountDto;
+import com.gra.local.persistence.services.dtos.VendorAccountLoginResponse;
 import com.gra.local.utils.CodeGeneration;
 import com.twilio.rest.lookups.v1.PhoneNumber;
 import com.twilio.rest.lookups.v1.PhoneNumberFetcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class VendorAccountService {
 
     private VendorAccountRepository vendorAccountRepository;
     private TwilioSmsApiWrapper twilioSmsApiWrapper;
+    private PasswordEncoder passwordEncoder;
+    private JwtTokenProvider jwtTokenProvider;
+    private AuthenticationManager authenticationManager;
 
     public VendorAccount save(VendorAccountDto dto) {
         return getVendorAccountRepository().save(EntityHelper.convertToAbstractEntity(dto, VendorAccount.class));
@@ -61,6 +72,35 @@ public class VendorAccountService {
         return smsSent;
     }
 
+    public String login(String phone, String password) {
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(phone, password));
+            return getJwtTokenProvider().createToken(phone, getVendorAccountRepository().findByPhone(phone).get().getRole());
+        } catch (AuthenticationException e) {
+            throw new CustomException("Invalid credentials", HttpStatus.UNPROCESSABLE_ENTITY, e);
+        }
+    }
+
+    public VendorAccountLoginResponse signup(VendorAccount user) {
+        Optional<VendorAccount> existingAccount = getVendorAccountRepository().findByPhone(user.getPhone());
+        if (existingAccount.isPresent()) {
+            existingAccount.get().setPassword(getPasswordEncoder().encode(user.getPassword()));
+            updatePassword(existingAccount.get());
+            VendorAccountLoginResponse vendorAccountLoginResponse = new VendorAccountLoginResponse();
+            vendorAccountLoginResponse.setAccountId(existingAccount.get().getId());
+            vendorAccountLoginResponse.setEmail(existingAccount.get().getEmail());
+            vendorAccountLoginResponse.setPhone(existingAccount.get().getPhone());
+
+            return vendorAccountLoginResponse;
+        } else {
+            throw new CustomException("Signup error because this email exists already.", HttpStatus.UNPROCESSABLE_ENTITY, new Exception("No account found with the provided information"));
+        }
+    }
+
+    public VendorAccount updatePassword(VendorAccount vendorAccount) {
+        return getVendorAccountRepository().updatePassword(vendorAccount).get();
+    }
+
     @Autowired
     public void setVendorAccountService(VendorAccountRepository vendorAccountRepository) {
         this.vendorAccountRepository = vendorAccountRepository;
@@ -76,5 +116,32 @@ public class VendorAccountService {
 
     public TwilioSmsApiWrapper getTwilioSmsApiWrapper() {
         return twilioSmsApiWrapper != null ? twilioSmsApiWrapper : new TwilioSmsApiWrapper();
+    }
+
+    public PasswordEncoder getPasswordEncoder() {
+        return passwordEncoder;
+    }
+
+    @Autowired
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    public JwtTokenProvider getJwtTokenProvider() {
+        return jwtTokenProvider;
+    }
+
+    @Autowired
+    public void setJwtTokenProvider(JwtTokenProvider jwtTokenProvider) {
+        this.jwtTokenProvider = jwtTokenProvider;
+    }
+
+    public AuthenticationManager getAuthenticationManager() {
+        return authenticationManager;
+    }
+
+    @Autowired
+    public void setAuthenticationManager(AuthenticationManager authenticationManager) {
+        this.authenticationManager = authenticationManager;
     }
 }
