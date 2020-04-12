@@ -23,4 +23,7 @@ public interface VendorAccountRepository extends JpaRepository<VendorAccount, Lo
 
     @Query("SELECT account FROM VendorAccount account where account.verifyingCode = ?1 and account.verified = true")
     Optional<VendorAccount> findByCode(String code);
+
+    @Query("SELECT account FROM VendorAccount account where account.phone = ?1")
+    Optional<VendorAccount> findByPhone(final String phone);
 }
