@@ -26,4 +26,9 @@ public interface VendorAccountRepository extends JpaRepository<VendorAccount, Lo
 
     @Query("SELECT account FROM VendorAccount account where account.phone = ?1")
     Optional<VendorAccount> findByPhone(final String phone);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE VendorAccount  account SET account.password =:#{#account.password} WHERE account.id =:#{#account.id}")
+    Optional<VendorAccount> updatePassword(VendorAccount account);
 }

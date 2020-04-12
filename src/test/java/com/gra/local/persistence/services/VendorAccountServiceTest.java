@@ -134,4 +134,25 @@ public class VendorAccountServiceTest {
 
         assertEquals(validPhoneNumber, Boolean.TRUE);
     }
+
+    @Test
+    public void updatePassword_sets_password_to_vendor_account_always_returns_updated_object() {
+        String password = "abracadabra";
+        String phone = "+2343532646";
+        Long id = 1L;
+
+        VendorAccount account = new VendorAccount();
+        account.setId(id);
+        account.setPhone(phone);
+        account.setEmail("asda@sadas.com");
+        account.setVerified(true);
+        account.setPassword(password);
+
+        when(repository.updatePassword(account)).thenReturn(java.util.Optional.of(account));
+        VendorAccount updatedAccount = subject.updatePassword(account);
+
+        assertEquals(updatedAccount.getPassword(), password);
+        assertEquals(updatedAccount.getPhone(), phone);
+        assertEquals(updatedAccount.getId(), id);
+    }
 }
