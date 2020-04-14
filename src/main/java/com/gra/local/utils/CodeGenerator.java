@@ -2,7 +2,7 @@ package com.gra.local.utils;
 
 import java.util.Random;
 
-public class CodeGeneration {
+public class CodeGenerator {
 
     public String createVerificationCode() {
         int leftLimit = 97; // letter 'a'

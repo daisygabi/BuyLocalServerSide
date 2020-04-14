@@ -1,5 +1,6 @@
 package com.gra.local.controllers;
 
+import com.gra.local.AuthorizedRequestTest;
 import com.gra.local.persistence.domain.QuantityType;
 import com.gra.local.persistence.domain.VendorProduct;
 import com.gra.local.persistence.services.dtos.VendorProductDto;
@@ -12,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-public class VendorProductsControllerTest extends BasicRequestTest {
+public class VendorProductsControllerTest extends AuthorizedRequestTest {
 
     @Before
     public void setUp() throws Exception {

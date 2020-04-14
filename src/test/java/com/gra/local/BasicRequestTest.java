@@ -1,4 +1,4 @@
-package com.gra.local.controllers;
+package com.gra.local;
 
 import com.gra.local.BuyLocalApplication;
 import org.flywaydb.core.Flyway;
@@ -36,13 +36,9 @@ public abstract class BasicRequestTest extends AbstractTransactionalJUnit4Spring
     @LocalServerPort
     private String serverPort;
 
-    protected String getRootUrl() {
-        return String.format("http://localhost:%s/api/v1", serverPort);
-    }
+    protected String getRootUrl() { return String.format("http://localhost:%s/api/v1", serverPort); }
 
-    protected TestRestTemplate getRestTemplate() {
-        return restTemplate;
-    }
+    protected TestRestTemplate getRestTemplate() { return restTemplate; }
 
     @Before
     public void prepareDatabase() {
@@ -51,9 +47,19 @@ public abstract class BasicRequestTest extends AbstractTransactionalJUnit4Spring
         flyway.migrate();
     }
 
-    protected <TBody> HttpEntity<?> buildHTTPEntity(TBody body) {
+    protected <TBody> HttpEntity<?> buildHTTPEntity(TBody body, String loginToken) {
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.ACCEPT_CHARSET, "UTF-8");
+        headers.add(HttpHeaders.AUTHORIZATION, buildAuthHeader(loginToken));
         return new HttpEntity<TBody>(body, headers);
     }
+
+    protected HttpEntity<?> buildEmptyHttpEntity(String loginToken) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, buildAuthHeader(loginToken));
+        return new HttpEntity<>(headers);
+    }
+
+    protected String[] getAffectedTableNames() { return new String[0]; }
+
+    private String buildAuthHeader(String loginToken) { return "Bearer " + loginToken; }
 }
