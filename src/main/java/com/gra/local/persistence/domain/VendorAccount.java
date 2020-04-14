@@ -44,7 +44,6 @@ public class VendorAccount extends DefaultDomain {
     @Column(columnDefinition = "verifying_code")
     private String verifyingCode;
 
-    @JsonIgnore
     @Column(columnDefinition = "password")
     private String password;
 

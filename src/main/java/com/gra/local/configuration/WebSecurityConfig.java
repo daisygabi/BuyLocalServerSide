@@ -64,7 +64,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.DELETE, "/api/v1/products/").permitAll() // delete product
 
                 // Login
-                .antMatchers(HttpMethod.POST, "/api/v1/account/login").permitAll() // login
+                .antMatchers(HttpMethod.POST, "/api/v1/login").permitAll() // login
+                .antMatchers(HttpMethod.PUT, "/api/v1/account/password").permitAll() // add password to existing vendor account
 
                 // Disallow everything else
                 .anyRequest().authenticated();

@@ -5,9 +5,9 @@ import com.gra.local.exceptions.CustomException;
 import com.gra.local.persistence.EntityHelper;
 import com.gra.local.persistence.domain.VendorAccount;
 import com.gra.local.persistence.repositories.VendorAccountRepository;
+import com.gra.local.persistence.services.dtos.Role;
 import com.gra.local.persistence.services.dtos.VendorAccountDto;
-import com.gra.local.persistence.services.dtos.VendorAccountLoginResponse;
-import com.gra.local.utils.CodeGeneration;
+import com.gra.local.utils.CodeGenerator;
 import com.twilio.rest.lookups.v1.PhoneNumber;
 import com.twilio.rest.lookups.v1.PhoneNumberFetcher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +18,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class VendorAccountService {
 
@@ -28,9 +26,12 @@ public class VendorAccountService {
     private PasswordEncoder passwordEncoder;
     private JwtTokenProvider jwtTokenProvider;
     private AuthenticationManager authenticationManager;
+    private CodeGenerator verificationCodeGenerator;
 
     public VendorAccount save(VendorAccountDto dto) {
-        return getVendorAccountRepository().save(EntityHelper.convertToAbstractEntity(dto, VendorAccount.class));
+        VendorAccount castVendorDetails = EntityHelper.convertToAbstractEntity(dto, VendorAccount.class);
+        castVendorDetails.setRole(Role.VENDOR);
+        return getVendorAccountRepository().save(castVendorDetails);
     }
 
     public boolean validatePhoneNumber(String phoneNumber) {
@@ -43,9 +44,9 @@ public class VendorAccountService {
         }
     }
 
-    public boolean sendValidationSMSCodeToVendor(String toNumber, String message) {
+    public boolean sendValidationSMSCodeToVendor(String toNumber, String fromNumber, String message) {
         try {
-            return getTwilioSmsApiWrapper().create(toNumber, System.getenv("TWILIO_DEV_TEST_PHONE_NR"), message);
+            return getTwilioSmsApiWrapper().create(toNumber, fromNumber, message);
         } catch (com.twilio.exception.ApiException e) {
             throw new CustomException("Couldn't send validation SMS to Vendor", HttpStatus.BAD_REQUEST, e);
         }
@@ -64,12 +65,16 @@ public class VendorAccountService {
     }
 
     public boolean verifyAccount(final String phoneNumber) {
-        String createVerificationCode = new CodeGeneration().createVerificationCode();
-        boolean smsSent = sendValidationSMSCodeToVendor(phoneNumber, createVerificationCode);
+        String createVerificationCode = getVerificationCodeGenerator().createVerificationCode();
+        boolean smsSent = sendValidationSMSCodeToVendor(phoneNumber, System.getenv("TWILIO_DEV_TEST_PHONE_NR"), createVerificationCode);
         if (smsSent) {
             saveVerificationCode(createVerificationCode, phoneNumber);
         }
         return smsSent;
+    }
+
+    public VendorAccount findByPhone(String phone) {
+        return getVendorAccountRepository().findByPhone(phone).get();
     }
 
     public String login(String phone, String password) {
@@ -81,23 +86,8 @@ public class VendorAccountService {
         }
     }
 
-    public VendorAccountLoginResponse signup(VendorAccount user) {
-        Optional<VendorAccount> existingAccount = getVendorAccountRepository().findByPhone(user.getPhone());
-        if (existingAccount.isPresent()) {
-            existingAccount.get().setPassword(getPasswordEncoder().encode(user.getPassword()));
-            updatePassword(existingAccount.get());
-            VendorAccountLoginResponse vendorAccountLoginResponse = new VendorAccountLoginResponse();
-            vendorAccountLoginResponse.setAccountId(existingAccount.get().getId());
-            vendorAccountLoginResponse.setEmail(existingAccount.get().getEmail());
-            vendorAccountLoginResponse.setPhone(existingAccount.get().getPhone());
-
-            return vendorAccountLoginResponse;
-        } else {
-            throw new CustomException("Signup error because this email exists already.", HttpStatus.UNPROCESSABLE_ENTITY, new Exception("No account found with the provided information"));
-        }
-    }
-
-    public VendorAccount updatePassword(VendorAccount vendorAccount) {
+    public VendorAccount updatePassword(VendorAccount vendorAccount, String password) {
+        vendorAccount.setPassword(getPasswordEncoder().encode(password));
         return getVendorAccountRepository().updatePassword(vendorAccount).get();
     }
 
@@ -143,5 +133,13 @@ public class VendorAccountService {
     @Autowired
     public void setAuthenticationManager(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
+    }
+
+    public CodeGenerator getVerificationCodeGenerator() {
+        return verificationCodeGenerator;
+    }
+
+    public void setVerificationCodeGenerator(CodeGenerator verificationCodeGenerator) {
+        this.verificationCodeGenerator = verificationCodeGenerator;
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api/v1/account")
 public class VendorAccountController {
 
@@ -49,5 +50,15 @@ public class VendorAccountController {
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.badRequest().build();
+    }
+
+    @PutMapping("/password")
+    public ResponseEntity<VendorAccount> addPassword(@Valid @RequestBody VendorAccount account) {
+        VendorAccount existingVendorAccount = vendorAccountService.findByPhone(account.getPhone());
+        if (existingVendorAccount != null) {
+            VendorAccount updatedAccount = vendorAccountService.updatePassword(existingVendorAccount, account.getPassword());
+            return ResponseEntity.ok(updatedAccount);
+        }
+        return ResponseEntity.notFound().build();
     }
 }
