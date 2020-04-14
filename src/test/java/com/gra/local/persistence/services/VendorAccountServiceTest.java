@@ -162,9 +162,9 @@ public class VendorAccountServiceTest {
 
         when(passwordEncoder.matches("somePassword", "someEncodedPassword")).thenReturn(true);
         when(passwordEncoder.encode("someNewPassword")).thenReturn("someNewEncodedPassword");
-        when(repository.updatePassword(account)).thenReturn(java.util.Optional.of(account));
         VendorAccount updatedAccount = subject.updatePassword(account, password);
 
+        verify(repository, times(1)).updatePassword(account);
         assertEquals(updatedAccount.getPassword(), encodedPassword);
         assertEquals(updatedAccount.getPhone(), phone);
         assertEquals(updatedAccount.getId(), id);

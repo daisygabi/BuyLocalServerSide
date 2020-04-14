@@ -30,5 +30,5 @@ public interface VendorAccountRepository extends JpaRepository<VendorAccount, Lo
     @Transactional
     @Modifying
     @Query("UPDATE VendorAccount  account SET account.password =:#{#account.password} WHERE account.id =:#{#account.id}")
-    Optional<VendorAccount> updatePassword(VendorAccount account);
+    void updatePassword(VendorAccount account);
 }

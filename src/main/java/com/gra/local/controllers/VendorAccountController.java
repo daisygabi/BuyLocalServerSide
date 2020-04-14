@@ -56,8 +56,8 @@ public class VendorAccountController {
     public ResponseEntity<VendorAccount> addPassword(@Valid @RequestBody VendorAccount account) {
         VendorAccount existingVendorAccount = vendorAccountService.findByPhone(account.getPhone());
         if (existingVendorAccount != null) {
-            VendorAccount updatedAccount = vendorAccountService.updatePassword(existingVendorAccount, account.getPassword());
-            return ResponseEntity.ok(updatedAccount);
+            vendorAccountService.updatePassword(existingVendorAccount, account.getPassword());
+            return ResponseEntity.ok(existingVendorAccount);
         }
         return ResponseEntity.notFound().build();
     }

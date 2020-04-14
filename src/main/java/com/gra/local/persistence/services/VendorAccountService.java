@@ -88,7 +88,8 @@ public class VendorAccountService {
 
     public VendorAccount updatePassword(VendorAccount vendorAccount, String password) {
         vendorAccount.setPassword(getPasswordEncoder().encode(password));
-        return getVendorAccountRepository().updatePassword(vendorAccount).get();
+        getVendorAccountRepository().updatePassword(vendorAccount);
+        return vendorAccount;
     }
 
     @Autowired
