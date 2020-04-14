@@ -3,6 +3,7 @@ package com.gra.local.persistence.services;
 import com.gra.local.persistence.domain.VendorAccount;
 import com.gra.local.persistence.repositories.VendorAccountRepository;
 import com.gra.local.persistence.services.dtos.VendorAccountDto;
+import com.gra.local.utils.CodeGenerator;
 import com.twilio.rest.lookups.v1.PhoneNumber;
 import com.twilio.rest.lookups.v1.PhoneNumberFetcher;
 import org.junit.Before;
@@ -10,12 +11,14 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.*;
@@ -25,6 +28,15 @@ public class VendorAccountServiceTest {
 
     @InjectMocks
     private VendorAccountService subject;
+
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
+    @Mock
+    private AuthenticationManager authenticationManager;
+
+    @Mock
+    private CodeGenerator codeGenerator;
 
     @Mock
     private VendorAccountRepository repository;
@@ -48,6 +60,7 @@ public class VendorAccountServiceTest {
         vendorAccountDto.setPhone("+30009990999");
 
         subject.setTwilioSmsApiWrapper(twilioSmsApiWrapper);
+        subject.setVerificationCodeGenerator(codeGenerator);
 
         when(twilioSmsApiWrapper.createPhoneNumberFetcher(any())).thenReturn(mockedPhoneNumberFetcher);
     }
@@ -80,7 +93,6 @@ public class VendorAccountServiceTest {
 
         when(twilioSmsApiWrapper.createPhoneNumberFetcher(number)).thenReturn(mockedPhoneNumberFetcher);
         when(mockedPhoneNumberFetcher.fetch()).thenReturn(mockedPhoneNumber);
-
         subject.validatePhoneNumber(number);
 
         verify(mockedPhoneNumberFetcher).fetch();
@@ -137,7 +149,8 @@ public class VendorAccountServiceTest {
 
     @Test
     public void updatePassword_sets_password_to_vendor_account_always_returns_updated_object() {
-        String password = "abracadabra";
+        String password = "someNewPassword";
+        String encodedPassword = "someNewEncodedPassword";
         String phone = "+2343532646";
         Long id = 1L;
 
@@ -146,13 +159,52 @@ public class VendorAccountServiceTest {
         account.setPhone(phone);
         account.setEmail("asda@sadas.com");
         account.setVerified(true);
-        account.setPassword(password);
 
+        when(passwordEncoder.matches("somePassword", "someEncodedPassword")).thenReturn(true);
+        when(passwordEncoder.encode("someNewPassword")).thenReturn("someNewEncodedPassword");
         when(repository.updatePassword(account)).thenReturn(java.util.Optional.of(account));
-        VendorAccount updatedAccount = subject.updatePassword(account);
+        VendorAccount updatedAccount = subject.updatePassword(account, password);
 
-        assertEquals(updatedAccount.getPassword(), password);
+        assertEquals(updatedAccount.getPassword(), encodedPassword);
         assertEquals(updatedAccount.getPhone(), phone);
         assertEquals(updatedAccount.getId(), id);
+    }
+
+    @Test
+    public void findByPhone_always_returns_vendor_account_if_phone_exists() {
+        String phone = "+1214234325";
+
+        VendorAccount account = new VendorAccount();
+        account.setPhone(phone);
+        account.setEmail("asda@sadas.com");
+        account.setCity("Bohinj");
+        account.setName("Moana");
+        account.setVerified(true);
+
+        when(repository.findByPhone(phone)).thenReturn(java.util.Optional.of(account));
+        VendorAccount foundVendorAccount = subject.findByPhone(phone);
+
+        assertNotNull(foundVendorAccount);
+        assertEquals(foundVendorAccount.getPhone(), phone);
+    }
+
+    @Test
+    public void verifyAccount_always_returns_true_if_account_exists() {
+        String code = "342fs";
+        String phone = "+1214234325";
+
+        VendorAccount account = new VendorAccount();
+        account.setPhone(phone);
+        account.setEmail("asda@sadas.com");
+        account.setVerifyingCode(code);
+        account.setVerified(true);
+
+        when(repository.updateVerificationCodeAndStatus(code, phone)).thenReturn(Optional.of(account));
+        // Not a great option to get value from system env.
+        when(twilioSmsApiWrapper.create(phone, System.getenv("TWILIO_DEV_TEST_PHONE_NR"), code)).thenReturn(Boolean.TRUE);
+        when(codeGenerator.createVerificationCode()).thenReturn(code);
+        boolean validAccount = subject.verifyAccount(phone);
+
+        assertEquals(validAccount, Boolean.TRUE);
     }
 }
