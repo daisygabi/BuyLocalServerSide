@@ -18,5 +18,4 @@ public class VendorProductDto {
     private Double price;
     private String currency;
     private Long vendorId;
-    private String vendorName;
 }

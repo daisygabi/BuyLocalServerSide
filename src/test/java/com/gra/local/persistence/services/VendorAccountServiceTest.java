@@ -1,5 +1,6 @@
 package com.gra.local.persistence.services;
 
+import com.gra.local.persistence.EntityHelper;
 import com.gra.local.persistence.domain.VendorAccount;
 import com.gra.local.persistence.repositories.VendorAccountRepository;
 import com.gra.local.persistence.services.dtos.VendorAccountDto;
@@ -15,6 +16,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -206,5 +209,17 @@ public class VendorAccountServiceTest {
         boolean validAccount = subject.verifyAccount(phone);
 
         assertEquals(validAccount, Boolean.TRUE);
+    }
+
+    @Test
+    public void findAllVendorsThatAreVerified_always_returns_all_verified_accounts() {
+        List<VendorAccount> accounts = new ArrayList<>();
+        accounts.add(EntityHelper.convertToAbstractEntity(vendorAccountDto, VendorAccount.class));
+
+        when(repository.findAllVendorsThatAreVerified()).thenReturn(accounts);
+        List<VendorAccount> verifiedVendorAccounts = subject.findAllVendorsThatAreVerified();
+
+        assertNotNull(verifiedVendorAccounts);
+        assertEquals(verifiedVendorAccounts.size(), accounts.size());
     }
 }

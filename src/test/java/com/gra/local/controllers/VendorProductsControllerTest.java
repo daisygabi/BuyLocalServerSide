@@ -40,6 +40,10 @@ public class VendorProductsControllerTest extends AuthorizedRequestTest {
         vendorProductDto.setMinQuantityPerOrder(1d);
         vendorProductDto.setMaxQuantityPerOrder(100d);
         vendorProductDto.setQuantityTypeId(QuantityType.KG.getIndex());
+        vendorProductDto.setVendorId(1L);
+        vendorProductDto.setInStock(true);
+        vendorProductDto.setPrice(34.3);
+        vendorProductDto.setCurrency("Eur");
 
         ResponseEntity<VendorProduct> putResponse = getRestTemplate().postForEntity(getRootUrl() + "/products/", vendorProductDto, VendorProduct.class);
         assertEquals(HttpStatus.OK, putResponse.getStatusCode());
@@ -54,6 +58,10 @@ public class VendorProductsControllerTest extends AuthorizedRequestTest {
         vendorProductDto.setMinQuantityPerOrder(3d);
         vendorProductDto.setMaxQuantityPerOrder(100d);
         vendorProductDto.setQuantityTypeId(QuantityType.ITEM.getIndex());
+        vendorProductDto.setVendorId(1L);
+        vendorProductDto.setInStock(true);
+        vendorProductDto.setPrice(34.3);
+        vendorProductDto.setCurrency("Eur");
 
         ResponseEntity<VendorProduct> putResponse = getRestTemplate().exchange(getRootUrl() + "/products/", HttpMethod.PUT, buildHTTPEntity(vendorProductDto), VendorProduct.class);
         assertEquals(HttpStatus.OK, putResponse.getStatusCode());

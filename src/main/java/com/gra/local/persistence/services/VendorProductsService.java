@@ -48,4 +48,8 @@ public class VendorProductsService {
     public List<VendorProduct> findAllProducts() {
         return getVendorProductsRepository().findAll();
     }
+
+    public List<VendorProduct> findAllProductsByVendorId(Long vendorId) {
+        return getVendorProductsRepository().findAllProductsByVendorId(vendorId);
+    }
 }
