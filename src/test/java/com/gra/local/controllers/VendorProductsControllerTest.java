@@ -10,6 +10,9 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -24,9 +27,9 @@ public class VendorProductsControllerTest extends AuthorizedRequestTest {
         vendorProductDto.setMaxQuantityPerOrder(0d);
         vendorProductDto.setQuantityTypeId(QuantityType.ITEM.getIndex());
 
-        ResponseEntity<VendorProduct> putResponse = getRestTemplate().postForEntity(getRootUrl() + "/products/", vendorProductDto, VendorProduct.class);
-        assertEquals(HttpStatus.OK, putResponse.getStatusCode());
-        assertNotNull(putResponse.getBody());
+        ResponseEntity<VendorProduct> postResponse = getRestTemplate().postForEntity(getRootUrl() + "/products/", vendorProductDto, VendorProduct.class);
+        assertEquals(HttpStatus.OK, postResponse.getStatusCode());
+        assertNotNull(postResponse.getBody());
     }
 
     @Test
@@ -68,5 +71,21 @@ public class VendorProductsControllerTest extends AuthorizedRequestTest {
 
         ResponseEntity<VendorProduct> putResponse = getRestTemplate().exchange(getRootUrl() + "/products/", HttpMethod.DELETE, buildHTTPEntity(vendorProductDto), VendorProduct.class);
         assertEquals(HttpStatus.OK, putResponse.getStatusCode());
+    }
+
+    @Test
+    public void testGetAllProducts_shouldReturn_list_of_existing_products() {
+        VendorProduct vendorProduct = new VendorProduct();
+        vendorProduct.setId(1L);
+        vendorProduct.setName("Mint Plants will be deleted");
+        vendorProduct.setMinQuantityPerOrder(3d);
+        vendorProduct.setMaxQuantityPerOrder(100d);
+        vendorProduct.setQuantityType(QuantityType.ITEM.getIndex());
+        List<VendorProduct> existingProducts = new ArrayList<>();
+        existingProducts.add(vendorProduct);
+
+        ResponseEntity<List> getResponse =  getRestTemplate().getForEntity(getRootUrl() + "/products/", List.class);
+        assertEquals(HttpStatus.OK, getResponse.getStatusCode());
+        assertEquals(existingProducts, getResponse.getBody());
     }
 }

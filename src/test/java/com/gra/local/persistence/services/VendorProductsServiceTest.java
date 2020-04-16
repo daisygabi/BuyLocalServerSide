@@ -1,23 +1,23 @@
 package com.gra.local.persistence.services;
 
+import com.gra.local.persistence.EntityHelper;
 import com.gra.local.persistence.domain.QuantityType;
 import com.gra.local.persistence.domain.VendorProduct;
 import com.gra.local.persistence.repositories.VendorProductsRepository;
 import com.gra.local.persistence.services.dtos.VendorProductDto;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.*;
 
@@ -100,5 +100,17 @@ public class VendorProductsServiceTest {
     public void deleteProduct_always_deletes_product_and_returns_nothing() {
         subject.delete(vendorProductDto);
         verify(repository).delete(any(VendorProduct.class));
+    }
+
+    @Test
+    public void findAllProducts_always_returns_all_existing_products() {
+        List<VendorProduct> productList = new ArrayList<>();
+        productList.add(EntityHelper.convertToAbstractEntity(vendorProductDto, VendorProduct.class));
+        when(repository.findAll()).thenReturn(productList);
+
+        List<VendorProduct> foundProducts = subject.findAllProducts();
+
+        assertNotNull(foundProducts);
+        assertEquals(foundProducts.size(), productList.size());
     }
 }
