@@ -3,7 +3,7 @@ package com.gra.local.controllers;
 import com.gra.local.BasicRequestTest;
 import com.gra.local.persistence.EntityHelper;
 import com.gra.local.persistence.domain.VendorAccount;
-import com.gra.local.persistence.services.dtos.Role;
+import com.gra.local.persistence.domain.Role;
 import com.gra.local.persistence.services.dtos.VendorAccountDto;
 import com.gra.local.persistence.services.dtos.VendorAccountLoginResponse;
 import org.junit.Before;

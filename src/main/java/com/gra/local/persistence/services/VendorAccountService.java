@@ -5,7 +5,7 @@ import com.gra.local.exceptions.CustomException;
 import com.gra.local.persistence.EntityHelper;
 import com.gra.local.persistence.domain.VendorAccount;
 import com.gra.local.persistence.repositories.VendorAccountRepository;
-import com.gra.local.persistence.services.dtos.Role;
+import com.gra.local.persistence.domain.Role;
 import com.gra.local.persistence.services.dtos.VendorAccountDto;
 import com.gra.local.utils.CodeGenerator;
 import com.twilio.rest.lookups.v1.PhoneNumber;

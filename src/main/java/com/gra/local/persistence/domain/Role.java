@@ -1,4 +1,4 @@
-package com.gra.local.persistence.services.dtos;
+package com.gra.local.persistence.domain;
 
 import org.springframework.security.core.GrantedAuthority;
 
