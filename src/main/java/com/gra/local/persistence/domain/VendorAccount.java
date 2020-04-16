@@ -1,6 +1,5 @@
 package com.gra.local.persistence.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gra.local.persistence.services.dtos.Role;
 import lombok.Builder;
 import lombok.Getter;
