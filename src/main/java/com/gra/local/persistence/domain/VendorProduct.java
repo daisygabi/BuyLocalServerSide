@@ -26,5 +26,20 @@ public class VendorProduct extends DefaultDomain {
 
     @Column(columnDefinition = "quantity_type")
     private int quantityType;
+
+    @Column(columnDefinition = "in_stock")
+    private boolean inStock;
+
+    @Column(columnDefinition = "price")
+    private Double price;
+
+    @Column(columnDefinition = "currency")
+    private String currency;
+    
+    @Column(columnDefinition = "vendor_id")
+    private Long vendorId;
+
+    @Column(columnDefinition = "vendor_name")
+    private String vendorName;
 }
 
