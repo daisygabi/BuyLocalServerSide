@@ -1,15 +1,17 @@
 package com.gra.local.persistence.services;
 
 import com.gra.local.persistence.EntityHelper;
+import com.gra.local.persistence.domain.VendorAccount;
 import com.gra.local.persistence.domain.VendorProduct;
 import com.gra.local.persistence.repositories.VendorProductsRepository;
 import com.gra.local.persistence.services.dtos.VendorProductDto;
+import com.gra.local.persistence.services.dtos.VendorsAndTheirProductsResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 public class VendorProductsService {
@@ -51,5 +53,22 @@ public class VendorProductsService {
 
     public List<VendorProduct> findAllProductsByVendorId(Long vendorId) {
         return getVendorProductsRepository().findAllProductsByVendorId(vendorId);
+    }
+
+    public VendorsAndTheirProductsResponse associateVendorWithProducts(VendorAccount account) {
+        VendorsAndTheirProductsResponse vendorsAndTheirProductsResponse = new VendorsAndTheirProductsResponse();
+        vendorsAndTheirProductsResponse.setVendorId(account.getId());
+        vendorsAndTheirProductsResponse.setVendorName(account.getName());
+        vendorsAndTheirProductsResponse.setProducts(findAllProductsByVendorId(account.getId()));
+
+        return vendorsAndTheirProductsResponse;
+    }
+
+    public List<VendorsAndTheirProductsResponse> aggregateVendorsWithTheirProducts(final List<VendorAccount> verifiedVendors) {
+        List<VendorsAndTheirProductsResponse> aggregatedData = new ArrayList<>();
+        for (VendorAccount account : verifiedVendors) {
+            aggregatedData.add(associateVendorWithProducts(account));
+        }
+        return aggregatedData;
     }
 }
