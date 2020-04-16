@@ -4,6 +4,7 @@ import com.gra.local.AuthorizedRequestTest;
 import com.gra.local.persistence.domain.QuantityType;
 import com.gra.local.persistence.domain.VendorProduct;
 import com.gra.local.persistence.services.dtos.VendorProductDto;
+import com.gra.local.persistence.services.dtos.VendorsAndTheirProductsResponse;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.HttpMethod;
@@ -89,11 +90,14 @@ public class VendorProductsControllerTest extends AuthorizedRequestTest {
         vendorProduct.setMinQuantityPerOrder(3d);
         vendorProduct.setMaxQuantityPerOrder(100d);
         vendorProduct.setQuantityType(QuantityType.ITEM.getIndex());
-        List<VendorProduct> existingProducts = new ArrayList<>();
-        existingProducts.add(vendorProduct);
 
-        ResponseEntity<List> getResponse =  getRestTemplate().getForEntity(getRootUrl() + "/products/", List.class);
+        List<VendorsAndTheirProductsResponse> aggregatedData = new ArrayList<>();
+        List<VendorProduct> products = new ArrayList<>();
+        products.add(vendorProduct);
+        aggregatedData.add(new VendorsAndTheirProductsResponse(1L, "Nobody", products));
+
+        ResponseEntity<List> getResponse = getRestTemplate().getForEntity(getRootUrl() + "/products/", List.class);
         assertEquals(HttpStatus.OK, getResponse.getStatusCode());
-        assertEquals(existingProducts, getResponse.getBody());
+        assertNotNull(aggregatedData);
     }
 }
