@@ -1,7 +1,7 @@
 package com.gra.local.configuration;
 
 import com.gra.local.exceptions.CustomException;
-import com.gra.local.persistence.services.dtos.Role;
+import com.gra.local.persistence.domain.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
