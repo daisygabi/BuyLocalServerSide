@@ -7,6 +7,7 @@ import com.gra.local.persistence.services.dtos.VendorProductDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -42,5 +43,9 @@ public class VendorProductsService {
 
     public VendorProductsRepository getVendorProductsRepository() {
         return vendorProductsRepository;
+    }
+
+    public List<VendorProduct> findAllProducts() {
+        return getVendorProductsRepository().findAll();
     }
 }
