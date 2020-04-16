@@ -35,11 +35,8 @@ public class VendorProduct extends DefaultDomain {
 
     @Column(columnDefinition = "currency")
     private String currency;
-    
+
     @Column(columnDefinition = "vendor_id")
     private Long vendorId;
-
-    @Column(columnDefinition = "vendor_name")
-    private String vendorName;
 }
 

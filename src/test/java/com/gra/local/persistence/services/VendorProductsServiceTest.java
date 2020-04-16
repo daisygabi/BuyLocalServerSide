@@ -113,4 +113,17 @@ public class VendorProductsServiceTest {
         assertNotNull(foundProducts);
         assertEquals(foundProducts.size(), productList.size());
     }
+
+    @Test
+    public void findAllProductsByVendorId_always_returns_list_of_products_of_given_account_id() {
+        List<VendorProduct> productList = new ArrayList<>();
+        vendorProductDto.setVendorId(1L);
+        productList.add(EntityHelper.convertToAbstractEntity(vendorProductDto, VendorProduct.class));
+        when(repository.findAllProductsByVendorId(1L)).thenReturn(productList);
+
+        List<VendorProduct> foundProducts = subject.findAllProductsByVendorId(1L);
+
+        assertNotNull(foundProducts);
+        assertEquals(foundProducts.size(), productList.size());
+    }
 }

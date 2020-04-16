@@ -10,5 +10,3 @@ alter table products
 alter table products
     add currency varchar not null;
 
-alter table products
-    add vendor_name varchar not null;

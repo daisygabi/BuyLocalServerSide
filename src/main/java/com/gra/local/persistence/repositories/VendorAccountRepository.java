@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -31,4 +32,7 @@ public interface VendorAccountRepository extends JpaRepository<VendorAccount, Lo
     @Modifying
     @Query("UPDATE VendorAccount  account SET account.password =:#{#account.password} WHERE account.id =:#{#account.id}")
     void updatePassword(VendorAccount account);
+
+    @Query("SELECT account FROM VendorAccount account where account.verified = true")
+    List<VendorAccount> findAllVendorsThatAreVerified();
 }

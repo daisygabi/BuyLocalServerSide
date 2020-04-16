@@ -3,9 +3,9 @@ package com.gra.local.persistence.services;
 import com.gra.local.configuration.JwtTokenProvider;
 import com.gra.local.exceptions.CustomException;
 import com.gra.local.persistence.EntityHelper;
+import com.gra.local.persistence.domain.Role;
 import com.gra.local.persistence.domain.VendorAccount;
 import com.gra.local.persistence.repositories.VendorAccountRepository;
-import com.gra.local.persistence.domain.Role;
 import com.gra.local.persistence.services.dtos.VendorAccountDto;
 import com.gra.local.utils.CodeGenerator;
 import com.twilio.rest.lookups.v1.PhoneNumber;
@@ -17,6 +17,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class VendorAccountService {
@@ -32,6 +34,10 @@ public class VendorAccountService {
         VendorAccount castVendorDetails = EntityHelper.convertToAbstractEntity(dto, VendorAccount.class);
         castVendorDetails.setRole(Role.VENDOR);
         return getVendorAccountRepository().save(castVendorDetails);
+    }
+
+    public List<VendorAccount> findAllVendorsThatAreVerified() {
+        return vendorAccountRepository.findAllVendorsThatAreVerified();
     }
 
     public boolean validatePhoneNumber(String phoneNumber) {

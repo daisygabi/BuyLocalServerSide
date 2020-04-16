@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Repository
 public interface VendorProductsRepository extends JpaRepository<VendorProduct, Long> {
@@ -17,4 +18,7 @@ public interface VendorProductsRepository extends JpaRepository<VendorProduct, L
     @Modifying
     @Query("UPDATE VendorProduct product SET product.name =:#{#product.name}, product.minQuantityPerOrder =:#{#product.minQuantityPerOrder}, product.maxQuantityPerOrder =:#{#product.maxQuantityPerOrder} WHERE product.id =:#{#product.id}")
     int update(@Param("product") VendorProductDto product);
+
+    @Query("SELECT product FROM VendorProduct product where product.vendorId = ?1")
+    List<VendorProduct> findAllProductsByVendorId(Long vendorId);
 }
