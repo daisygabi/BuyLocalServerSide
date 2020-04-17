@@ -33,6 +33,6 @@ public interface VendorAccountRepository extends JpaRepository<VendorAccount, Lo
     @Query("UPDATE VendorAccount  account SET account.password =:#{#account.password} WHERE account.id =:#{#account.id}")
     void updatePassword(VendorAccount account);
 
-    @Query("SELECT account FROM VendorAccount account where account.verified = true")
+    @Query("SELECT account FROM VendorAccount account where account.verified = true and account.role = 1")
     List<VendorAccount> findAllVendorsThatAreVerified();
 }
