@@ -38,5 +38,8 @@ public class VendorProduct extends DefaultDomain {
 
     @Column(columnDefinition = "vendor_id")
     private Long vendorId;
+
+    @Column(columnDefinition = "selected_quantity")
+    private int selectedQuantity;
 }
 
