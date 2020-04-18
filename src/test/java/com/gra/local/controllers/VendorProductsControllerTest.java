@@ -94,7 +94,7 @@ public class VendorProductsControllerTest extends AuthorizedRequestTest {
         List<VendorsAndTheirProductsResponse> aggregatedData = new ArrayList<>();
         List<VendorProduct> products = new ArrayList<>();
         products.add(vendorProduct);
-        aggregatedData.add(new VendorsAndTheirProductsResponse(1L, "Nobody", products));
+        aggregatedData.add(new VendorsAndTheirProductsResponse(1L, "Nobody", products, ""));
 
         ResponseEntity<List> getResponse = getRestTemplate().getForEntity(getRootUrl() + "/products/", List.class);
         assertEquals(HttpStatus.OK, getResponse.getStatusCode());
