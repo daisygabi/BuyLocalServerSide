@@ -63,6 +63,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/api/v1/products/").permitAll() // add a product
                 .antMatchers(HttpMethod.PUT, "/api/v1/products/").permitAll() // update product details
                 .antMatchers(HttpMethod.DELETE, "/api/v1/products/").permitAll() // delete product
+                // Orders
+                .antMatchers(HttpMethod.POST, "/api/v1/pre-order/").permitAll() // a customer only pre-orders products
 
                 // Login
                 .antMatchers(HttpMethod.POST, "/api/v1/login").permitAll() // login

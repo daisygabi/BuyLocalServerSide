@@ -16,4 +16,5 @@ public class VendorsAndTheirProductsResponse {
     private Long vendorId;
     private String vendorName;
     private List<VendorProduct> products;
+    private String customerPhoneNumber;
 }
