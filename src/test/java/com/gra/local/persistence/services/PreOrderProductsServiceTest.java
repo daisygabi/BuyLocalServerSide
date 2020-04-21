@@ -39,7 +39,7 @@ public class PreOrderProductsServiceTest {
         when(twilioSmsApiWrapper.createPhoneNumberFetcher(any())).thenReturn(mockedPhoneNumberFetcher);
 
         products = new ArrayList<>();
-        products.add(new VendorProduct(1L, "Basil", 1.0D, 12.0D, QuantityType.KG.getIndex(), true, 12D, CurrencyEnum.EUR.getAuthority(), 1L, 5));
+        products.add(new VendorProduct(1L, "Basil", 1.0D, 12.0D, QuantityType.KG.getIndex(), true, 12D, CurrencyEnum.EURO.getAuthority(), 1L, 5));
     }
 
     @Test
@@ -50,7 +50,7 @@ public class PreOrderProductsServiceTest {
 
         when(twilioSmsApiWrapper.create(phone, System.getenv("TWILIO_DEV_TEST_PHONE_NR"), message)).thenReturn(Boolean.TRUE);
         when(mockedPhoneNumberFetcher.fetch()).thenReturn(mockedPhoneNumber);
-        boolean smsSent = subject.sendOrderDetailsBySmsToVendors(anyString(), products);
+        boolean smsSent = subject.sendOrderDetailsBySmsToVendors(anyString(), products, 1L);
 
         assertEquals(smsSent, Boolean.TRUE);
     }

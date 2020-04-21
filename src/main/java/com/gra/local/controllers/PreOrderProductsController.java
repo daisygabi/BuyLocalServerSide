@@ -31,10 +31,10 @@ public class PreOrderProductsController {
             // For all the vendors that have products in the list, send them pre-order SMS. They should confirm by SMS as well
             for (VendorsAndTheirProductsResponse data : vendorsAndTheirProducts) {
                 // Save pre order
-                preOrderProductsService.save(data);
+                PreOrders preOrder = preOrderProductsService.save(data);
 
                 // Send SMS to vendor
-                preOrderProductsService.sendOrderDetailsBySmsToVendors(data.getCustomerPhoneNumber(), data.getProducts());
+                preOrderProductsService.sendOrderDetailsBySmsToVendors(data.getCustomerPhoneNumber(), data.getProducts(), preOrder.getId());
             }
             return ResponseEntity.ok().build();
         } catch (Exception ex) {

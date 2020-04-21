@@ -32,12 +32,16 @@ public class PreOrderProductsService {
      * @param products
      * @return
      */
-    public boolean sendOrderDetailsBySmsToVendors(@Valid String customerPhoneNumber, @Valid @NonNull List<VendorProduct> products) {
-        String smsMessage = constructSmsMessage(products);
-        return getTwilioSmsApiWrapper().create(customerPhoneNumber, System.getenv("TWILIO_DEV_TEST_PHONE_NR"), smsMessage);
+    public boolean sendOrderDetailsBySmsToVendors(@Valid String customerPhoneNumber, @Valid @NonNull List<VendorProduct> products, @Valid @NonNull Long preorderId) {
+        Optional<PreOrders> preOrder = getPreOrdersRepository().findById(preorderId);
+        if (preOrder.isPresent()) {
+            String smsMessage = constructSmsMessage(products, preOrder.get());
+            return getTwilioSmsApiWrapper().create(customerPhoneNumber, System.getenv("TWILIO_DEV_TEST_PHONE_NR"), smsMessage);
+        }
+        return false;
     }
 
-    public void save(VendorsAndTheirProductsResponse data) throws NoSuchAlgorithmException {
+    public PreOrders save(VendorsAndTheirProductsResponse data) throws NoSuchAlgorithmException {
         PreOrders preOrder = new PreOrders();
         preOrder.setVendorId(data.getVendorId());
         preOrder.setCustomerPhoneNumber(data.getCustomerPhoneNumber());
@@ -47,7 +51,7 @@ public class PreOrderProductsService {
         preOrder.setAcceptLink(createAcceptLink(uuid));
         preOrder.setDenyLink(createDenyLink(uuid));
 
-        getPreOrdersRepository().save(preOrder);
+        return getPreOrdersRepository().save(preOrder);
     }
 
     private String[] createProductIdArray(List<VendorProduct> preOrderProducts) {
@@ -59,11 +63,11 @@ public class PreOrderProductsService {
     }
 
     private String createAcceptLink(String uuid) {
-        return getClientBaseUrlPath() + "accept/" + uuid;
+        return getClientBaseUrlPath() + "pre-order/accept/" + uuid;
     }
 
     private String createDenyLink(String uuid) {
-        return getClientBaseUrlPath() + "deny/" + uuid;
+        return getClientBaseUrlPath() + "pre-order/deny/" + uuid;
     }
 
     public Optional<PreOrders> findAcceptedUrl(String uuid) {
@@ -84,15 +88,14 @@ public class PreOrderProductsService {
         getPreOrdersRepository().updatePreOrderStatus(preOrderOptional.get().getId(), Boolean.FALSE);
     }
 
-    private String constructSmsMessage(@Valid @NonNull List<VendorProduct> products) {
+    private String constructSmsMessage(@Valid @NonNull List<VendorProduct> products, PreOrders preOrder) {
         StringBuffer messageBuffer = new StringBuffer();
         messageBuffer.append("You have an order for:");
         for (int i = 0; i < products.size(); i++) {
             messageBuffer.append(i).append(": ").append(products.get(i).getName());
             messageBuffer.append(products.get(i).getSelectedQuantity());
-            //TODO create accept and deny links
-            messageBuffer.append("Accept link:");
-            messageBuffer.append("Deny link:");
+            messageBuffer.append("Accept link: " + preOrder.getAcceptLink());
+            messageBuffer.append("Deny link: " + preOrder.getDenyLink());
         }
         return messageBuffer.toString();
     }
