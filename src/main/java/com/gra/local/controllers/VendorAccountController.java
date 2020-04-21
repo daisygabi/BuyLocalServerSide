@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -26,6 +27,12 @@ public class VendorAccountController {
     public ResponseEntity<?> createAccount(@Valid @RequestBody VendorAccountDto accountDto) {
         VendorAccount createdVendorAccount = vendorAccountService.save(accountDto);
         return createdVendorAccount != null ? ResponseEntity.ok(EntityHelper.convertToAbstractDto(createdVendorAccount, VendorAccountDto.class)) : ResponseEntity.badRequest().build();
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<?> getAllVerifiedVendors() {
+        List<VendorAccount> verifiedVendors = vendorAccountService.findAllVendorsThatAreVerified();
+        return ResponseEntity.ok(verifiedVendors);
     }
 
     @PostMapping("/validate/{lookupNumber}")
