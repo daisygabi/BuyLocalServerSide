@@ -12,37 +12,37 @@ on conflict do nothing;
 /* Create demo dev products*/
 INSERT INTO products (name, min_quantity_per_order, max_quantity_per_order, quantity_type, created_at, updated_at,
                       in_stock, price, vendor_id, currency)
-VALUES ('Bok Choy', 1, 0, 4, '2020-04-16T14:12:39.000+0000', '2020-04-16T14:12:39.000+0000', true, 12, 1, 'Eur')
+VALUES ('Bok Choy', 1, 0, 4, '2020-04-16T14:12:39.000+0000', '2020-04-16T14:12:39.000+0000', true, 12, 1, 'EURO')
 on conflict do nothing;
 
 INSERT INTO products (name, min_quantity_per_order, max_quantity_per_order, quantity_type, created_at, updated_at,
                       in_stock, price, vendor_id, currency)
-VALUES ('Sorrel Leaves', 1, 0, 4, '2020-04-16T14:12:39.000+0000', '2020-04-16T14:12:39.000+0000', true, 12, 1, 'Eur')
+VALUES ('Sorrel Leaves', 1, 0, 4, '2020-04-16T14:12:39.000+0000', '2020-04-16T14:12:39.000+0000', true, 12, 1, 'EURO')
 on conflict do nothing;
 
 INSERT INTO products (name, min_quantity_per_order, max_quantity_per_order, quantity_type, created_at, updated_at,
                       in_stock, price, vendor_id, currency)
-VALUES ('Kaffir Lime', 1, 0, 4, '2020-04-16T14:12:39.000+0000', '2020-04-16T14:12:39.000+0000', true, 12, 1, 'Eur')
+VALUES ('Kaffir Lime', 1, 0, 4, '2020-04-16T14:12:39.000+0000', '2020-04-16T14:12:39.000+0000', true, 12, 1, 'EURO')
 on conflict do nothing;
 
 INSERT INTO products (name, min_quantity_per_order, max_quantity_per_order, quantity_type, created_at, updated_at,
                       in_stock, price, vendor_id, currency)
-VALUES ('Pimiento', 1, 0, 4, '2020-04-16T14:12:39.000+0000', '2020-04-16T14:12:39.000+0000', true, 12, 1, 'Eur')
+VALUES ('Pimiento', 1, 0, 4, '2020-04-16T14:12:39.000+0000', '2020-04-16T14:12:39.000+0000', true, 12, 1, 'EURO')
 on conflict do nothing;
 
 INSERT INTO products (name, min_quantity_per_order, max_quantity_per_order, quantity_type, created_at, updated_at,
                       in_stock, price, vendor_id, currency)
-VALUES ('Mustard Leaves', 1, 0, 4, '2020-04-16T14:12:39.000+0000', '2020-04-16T14:12:39.000+0000', true, 12, 1, 'Eur')
+VALUES ('Mustard Leaves', 1, 0, 4, '2020-04-16T14:12:39.000+0000', '2020-04-16T14:12:39.000+0000', true, 12, 1, 'EURO')
 on conflict do nothing;
 
 ------------------------------------
 
 INSERT INTO products (name, min_quantity_per_order, max_quantity_per_order, quantity_type, created_at, updated_at,
                       in_stock, price, vendor_id, currency)
-VALUES ('Product 1', 1, 0, 4, '2020-04-16T14:12:39.000+0000', '2020-04-16T14:12:39.000+0000', true, 12, 2, 'Eur')
+VALUES ('Product 1', 1, 0, 4, '2020-04-16T14:12:39.000+0000', '2020-04-16T14:12:39.000+0000', true, 12, 2, 'EURO')
 on conflict do nothing;
 
 INSERT INTO products (name, min_quantity_per_order, max_quantity_per_order, quantity_type, created_at, updated_at,
                       in_stock, price, vendor_id, currency)
-VALUES ('Product 2', 1, 0, 4, '2020-04-16T14:12:39.000+0000', '2020-04-16T14:12:39.000+0000', true, 12, 2, 'Eur')
+VALUES ('Product 2', 1, 0, 4, '2020-04-16T14:12:39.000+0000', '2020-04-16T14:12:39.000+0000', true, 12, 2, 'EURO')
 on conflict do nothing;

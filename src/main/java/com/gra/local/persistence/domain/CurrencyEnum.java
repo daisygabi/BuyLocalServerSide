@@ -3,7 +3,7 @@ package com.gra.local.persistence.domain;
 import org.springframework.security.core.GrantedAuthority;
 
 public enum CurrencyEnum implements GrantedAuthority {
-    EUR("Euro", 0),
+    EURO("Euro", 0),
     RON("Ron", 1);
 
     private String name;
