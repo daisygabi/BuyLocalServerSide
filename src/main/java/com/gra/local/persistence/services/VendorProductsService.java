@@ -1,6 +1,7 @@
 package com.gra.local.persistence.services;
 
 import com.gra.local.persistence.EntityHelper;
+import com.gra.local.persistence.domain.QuantityType;
 import com.gra.local.persistence.domain.VendorAccount;
 import com.gra.local.persistence.domain.VendorProduct;
 import com.gra.local.persistence.repositories.VendorProductsRepository;
@@ -59,7 +60,15 @@ public class VendorProductsService {
         VendorsAndTheirProductsResponse vendorsAndTheirProductsResponse = new VendorsAndTheirProductsResponse();
         vendorsAndTheirProductsResponse.setVendorId(account.getId());
         vendorsAndTheirProductsResponse.setVendorName(account.getName());
-        vendorsAndTheirProductsResponse.setProducts(findAllProductsByVendorId(account.getId()));
+        List<VendorProduct> products = findAllProductsByVendorId(account.getId());
+
+        List<VendorProductDto> productDtos = new ArrayList<>();
+        for (VendorProduct product : products) {
+            VendorProductDto dto = EntityHelper.convertToAbstractDto(product, VendorProductDto.class);
+            dto.setQuantityType(QuantityType.getByTypeId(product.getQuantityType()).getAuthority());
+            productDtos.add(dto);
+        }
+        vendorsAndTheirProductsResponse.setProducts(productDtos);
 
         return vendorsAndTheirProductsResponse;
     }

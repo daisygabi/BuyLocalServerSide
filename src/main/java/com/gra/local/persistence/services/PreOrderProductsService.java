@@ -1,8 +1,8 @@
 package com.gra.local.persistence.services;
 
 import com.gra.local.persistence.domain.PreOrders;
-import com.gra.local.persistence.domain.VendorProduct;
 import com.gra.local.persistence.repositories.PreOrdersRepository;
+import com.gra.local.persistence.services.dtos.VendorProductDto;
 import com.gra.local.persistence.services.dtos.VendorsAndTheirProductsResponse;
 import com.gra.local.utils.CodeGenerator;
 import lombok.NonNull;
@@ -32,7 +32,7 @@ public class PreOrderProductsService {
      * @param products
      * @return
      */
-    public boolean sendOrderDetailsBySmsToVendors(@Valid String customerPhoneNumber, @Valid @NonNull List<VendorProduct> products, @Valid @NonNull Long preorderId) {
+    public boolean sendOrderDetailsBySmsToVendors(@Valid String customerPhoneNumber, @Valid @NonNull List<VendorProductDto> products, @Valid @NonNull Long preorderId) {
         Optional<PreOrders> preOrder = getPreOrdersRepository().findById(preorderId);
         if (preOrder.isPresent()) {
             String smsMessage = constructSmsMessage(products, preOrder.get());
@@ -54,7 +54,7 @@ public class PreOrderProductsService {
         return getPreOrdersRepository().save(preOrder);
     }
 
-    private String[] createProductIdArray(List<VendorProduct> preOrderProducts) {
+    private String[] createProductIdArray(List<VendorProductDto> preOrderProducts) {
         String[] productIds = new String[preOrderProducts.size()];
         for (int i = 0; i < preOrderProducts.size(); i++) {
             productIds[i] = preOrderProducts.get(i).getId().toString();
@@ -88,7 +88,7 @@ public class PreOrderProductsService {
         getPreOrdersRepository().updatePreOrderStatus(preOrderOptional.get().getId(), Boolean.FALSE);
     }
 
-    private String constructSmsMessage(@Valid @NonNull List<VendorProduct> products, PreOrders preOrder) {
+    private String constructSmsMessage(@Valid @NonNull List<VendorProductDto> products, PreOrders preOrder) {
         StringBuffer messageBuffer = new StringBuffer();
         messageBuffer.append("You have an order for:");
         for (int i = 0; i < products.size(); i++) {

@@ -1,6 +1,7 @@
 package com.gra.local.controllers;
 
 import com.gra.local.AuthorizedRequestTest;
+import com.gra.local.persistence.EntityHelper;
 import com.gra.local.persistence.domain.QuantityType;
 import com.gra.local.persistence.domain.VendorProduct;
 import com.gra.local.persistence.services.dtos.VendorProductDto;
@@ -92,8 +93,8 @@ public class VendorProductsControllerTest extends AuthorizedRequestTest {
         vendorProduct.setQuantityType(QuantityType.ITEM.getIndex());
 
         List<VendorsAndTheirProductsResponse> aggregatedData = new ArrayList<>();
-        List<VendorProduct> products = new ArrayList<>();
-        products.add(vendorProduct);
+        List<VendorProductDto> products = new ArrayList<>();
+        products.add(EntityHelper.convertToAbstractDto(vendorProduct, VendorProductDto.class));
         aggregatedData.add(new VendorsAndTheirProductsResponse(1L, "Nobody", products, ""));
 
         ResponseEntity<List> getResponse = getRestTemplate().getForEntity(getRootUrl() + "/products/", List.class);

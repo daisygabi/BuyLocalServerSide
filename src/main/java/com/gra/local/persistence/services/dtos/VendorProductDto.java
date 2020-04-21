@@ -14,6 +14,7 @@ public class VendorProductDto {
     private Double minQuantityPerOrder;
     private Double maxQuantityPerOrder;
     private int quantityTypeId;
+    private String quantityType;
     private boolean inStock;
     private Double price;
     private String currency;
