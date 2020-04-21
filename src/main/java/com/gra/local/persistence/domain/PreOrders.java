@@ -1,13 +1,22 @@
 package com.gra.local.persistence.domain;
 
+import com.vladmihalcea.hibernate.type.array.StringArrayType;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.TypeDef;
+import org.hibernate.annotations.TypeDefs;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Getter
 @Setter
+@TypeDefs({
+        @TypeDef(
+                name = "string-array",
+                typeClass = StringArrayType.class
+        ),
+})
 @Table(name = "preorders")
 @Entity
 public class PreOrders {
