@@ -1,8 +1,10 @@
 package com.gra.local.persistence.services;
 
+import com.gra.local.persistence.EntityHelper;
 import com.gra.local.persistence.domain.CurrencyEnum;
 import com.gra.local.persistence.domain.QuantityType;
 import com.gra.local.persistence.domain.VendorProduct;
+import com.gra.local.persistence.services.dtos.VendorProductDto;
 import com.twilio.rest.lookups.v1.PhoneNumber;
 import com.twilio.rest.lookups.v1.PhoneNumberFetcher;
 import org.junit.Before;
@@ -30,7 +32,7 @@ public class PreOrderProductsServiceTest {
     @Mock
     private PhoneNumberFetcher mockedPhoneNumberFetcher;
 
-    private List<VendorProduct> products;
+    private List<VendorProductDto> products;
 
     @Before
     public void setUp() {
@@ -39,7 +41,8 @@ public class PreOrderProductsServiceTest {
         when(twilioSmsApiWrapper.createPhoneNumberFetcher(any())).thenReturn(mockedPhoneNumberFetcher);
 
         products = new ArrayList<>();
-        products.add(new VendorProduct(1L, "Basil", 1.0D, 12.0D, QuantityType.KG.getIndex(), true, 12D, CurrencyEnum.EURO.getAuthority(), 1L, 5));
+        VendorProduct product = new VendorProduct(1L, "Basil", 1.0D, 12.0D, QuantityType.KG.getIndex(), true, 12D, CurrencyEnum.EURO.getAuthority(), 1L, 5);
+        products.add(EntityHelper.convertToAbstractDto(product, VendorProductDto.class));
     }
 
     @Test

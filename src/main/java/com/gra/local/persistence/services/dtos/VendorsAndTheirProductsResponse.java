@@ -1,6 +1,5 @@
 package com.gra.local.persistence.services.dtos;
 
-import com.gra.local.persistence.domain.VendorProduct;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +14,6 @@ import java.util.List;
 public class VendorsAndTheirProductsResponse {
     private Long vendorId;
     private String vendorName;
-    private List<VendorProduct> products;
+    private List<VendorProductDto> products;
     private String customerPhoneNumber;
 }
