@@ -3,7 +3,7 @@ package com.gra.local.controllers;
 import com.gra.local.exceptions.CustomException;
 import com.gra.local.persistence.domain.PreOrders;
 import com.gra.local.persistence.services.PreOrderProductsService;
-import com.gra.local.persistence.services.dtos.VendorsAndTheirProductsResponse;
+import com.gra.local.persistence.services.dtos.Order;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,16 +25,16 @@ public class PreOrderProductsController {
         this.preOrderProductsService = preOrderProductsService;
     }
 
-    @PostMapping("/")
-    public ResponseEntity<?> preOrderProducts(@Valid @NonNull @RequestBody List<VendorsAndTheirProductsResponse> vendorsAndTheirProducts) {
+    @PostMapping("/{customerPhoneNumber}")
+    public ResponseEntity<?> preOrderProducts(@Valid @NonNull @RequestBody List<Order> orderedProducts, @Valid @NonNull @PathVariable String customerPhoneNumber) {
         try {
             // For all the vendors that have products in the list, send them pre-order SMS. They should confirm by SMS as well
-            for (VendorsAndTheirProductsResponse data : vendorsAndTheirProducts) {
+            for (Order data : orderedProducts) {
                 // Save pre order
-                PreOrders preOrder = preOrderProductsService.save(data);
+                PreOrders preOrder = preOrderProductsService.save(data, customerPhoneNumber);
 
                 // Send SMS to vendor
-                preOrderProductsService.sendOrderDetailsBySmsToVendors(data.getCustomerPhoneNumber(), data.getProducts(), preOrder.getId());
+                preOrderProductsService.sendOrderDetailsBySmsToVendors(customerPhoneNumber, data.getProducts(), preOrder.getId());
             }
             return ResponseEntity.ok().build();
         } catch (Exception ex) {
