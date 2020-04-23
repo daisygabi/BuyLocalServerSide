@@ -4,6 +4,7 @@ import com.gra.local.persistence.EntityHelper;
 import com.gra.local.persistence.domain.CurrencyEnum;
 import com.gra.local.persistence.domain.QuantityType;
 import com.gra.local.persistence.domain.VendorProduct;
+import com.gra.local.persistence.services.dtos.ProductAndSelectedQuantity;
 import com.gra.local.persistence.services.dtos.VendorProductDto;
 import com.twilio.rest.lookups.v1.PhoneNumber;
 import com.twilio.rest.lookups.v1.PhoneNumberFetcher;
@@ -50,6 +51,7 @@ public class PreOrderProductsServiceTest {
         PhoneNumber mockedPhoneNumber = mock(PhoneNumber.class);
         String phone = "+1214234325";
         String message = "Testing is not easy but it's rewarding";
+        ProductAndSelectedQuantity[] products = new ProductAndSelectedQuantity[] {};
 
         when(twilioSmsApiWrapper.create(phone, System.getenv("TWILIO_DEV_TEST_PHONE_NR"), message)).thenReturn(Boolean.TRUE);
         when(mockedPhoneNumberFetcher.fetch()).thenReturn(mockedPhoneNumber);

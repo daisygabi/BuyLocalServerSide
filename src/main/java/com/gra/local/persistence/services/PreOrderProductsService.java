@@ -2,6 +2,8 @@ package com.gra.local.persistence.services;
 
 import com.gra.local.persistence.domain.PreOrders;
 import com.gra.local.persistence.repositories.PreOrdersRepository;
+import com.gra.local.persistence.services.dtos.Order;
+import com.gra.local.persistence.services.dtos.ProductAndSelectedQuantity;
 import com.gra.local.persistence.services.dtos.VendorProductDto;
 import com.gra.local.persistence.services.dtos.VendorsAndTheirProductsResponse;
 import com.gra.local.utils.CodeGenerator;
@@ -32,7 +34,7 @@ public class PreOrderProductsService {
      * @param products
      * @return
      */
-    public boolean sendOrderDetailsBySmsToVendors(@Valid String customerPhoneNumber, @Valid @NonNull List<VendorProductDto> products, @Valid @NonNull Long preorderId) {
+    public boolean sendOrderDetailsBySmsToVendors(@Valid String customerPhoneNumber, @Valid @NonNull ProductAndSelectedQuantity[] products, @Valid @NonNull Long preorderId) {
         Optional<PreOrders> preOrder = getPreOrdersRepository().findById(preorderId);
         if (preOrder.isPresent()) {
             String smsMessage = constructSmsMessage(products, preOrder.get());
@@ -41,10 +43,10 @@ public class PreOrderProductsService {
         return false;
     }
 
-    public PreOrders save(VendorsAndTheirProductsResponse data) throws NoSuchAlgorithmException {
+    public PreOrders save(Order data, String customerPhoneNumber) throws NoSuchAlgorithmException {
         PreOrders preOrder = new PreOrders();
         preOrder.setVendorId(data.getVendorId());
-        preOrder.setCustomerPhoneNumber(data.getCustomerPhoneNumber());
+        preOrder.setCustomerPhoneNumber(customerPhoneNumber);
         preOrder.setProductIds(createProductIdArray(data.getProducts()));
 
         String uuid = CodeGenerator.generateUUID();
@@ -54,10 +56,10 @@ public class PreOrderProductsService {
         return getPreOrdersRepository().save(preOrder);
     }
 
-    private String[] createProductIdArray(List<VendorProductDto> preOrderProducts) {
-        String[] productIds = new String[preOrderProducts.size()];
-        for (int i = 0; i < preOrderProducts.size(); i++) {
-            productIds[i] = preOrderProducts.get(i).getId().toString();
+    private String[] createProductIdArray(ProductAndSelectedQuantity[] preOrderProducts) {
+        String[] productIds = new String[preOrderProducts.length];
+        for (int i = 0; i < preOrderProducts.length; i++) {
+            productIds[i] = preOrderProducts[i].getProductId().toString();
         }
         return productIds;
     }
@@ -88,12 +90,12 @@ public class PreOrderProductsService {
         getPreOrdersRepository().updatePreOrderStatus(preOrderOptional.get().getId(), Boolean.FALSE);
     }
 
-    private String constructSmsMessage(@Valid @NonNull List<VendorProductDto> products, PreOrders preOrder) {
+    private String constructSmsMessage(@Valid @NonNull ProductAndSelectedQuantity[] products, PreOrders preOrder) {
         StringBuffer messageBuffer = new StringBuffer();
         messageBuffer.append("You have an order for:");
-        for (int i = 0; i < products.size(); i++) {
-            messageBuffer.append(i).append(": ").append(products.get(i).getName());
-            messageBuffer.append(products.get(i).getSelectedQuantity());
+        for (int i = 0; i < products.length; i++) {
+            messageBuffer.append(i).append(": ").append(products[i].getProductName());
+            messageBuffer.append(products[i].getSelectedQuantity());
             messageBuffer.append("Accept link: " + preOrder.getAcceptLink());
             messageBuffer.append("Deny link: " + preOrder.getDenyLink());
         }
