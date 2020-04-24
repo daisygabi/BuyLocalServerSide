@@ -46,12 +46,12 @@ public class PreOrderProductsController {
     public ResponseEntity<?> acceptPreOrderAsVendor(@Valid @NonNull @PathVariable String uuid) {
         Optional<PreOrders> optionalPreOrder = preOrderProductsService.findAcceptedUrl(uuid);
         if (optionalPreOrder.isPresent()) {
-            // Update status of preorder to Accepted = true;
+            // Update status of pre-order to Accepted = true;
             preOrderProductsService.updateStatusToAccepted(optionalPreOrder.get().getId());
             // Send sms to customer telling them the order is accepted and on it's way
-            //TODO
+            preOrderProductsService.notifyCustomerAboutVendorsResponse(optionalPreOrder.get().getCustomerPhoneNumber(),
+                    "Your order nr " + optionalPreOrder.get().getId() + " will be delivered.");
 
-            // Respond
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();
@@ -61,10 +61,11 @@ public class PreOrderProductsController {
     public ResponseEntity<?> denyPreOrderAsVendor(@Valid @NonNull @PathVariable String uuid) {
         Optional<PreOrders> optionalPreOrder = preOrderProductsService.findAcceptedUrl(uuid);
         if (optionalPreOrder.isPresent()) {
-            // Update status of preorder to Denied = true;
+            // Update status of pre-order to Denied = true;
             preOrderProductsService.updateStatusToDenied(optionalPreOrder.get().getId());
             // Send sms to customer telling them the order is accepted and on it's way
-            // TODO
+            preOrderProductsService.notifyCustomerAboutVendorsResponse(optionalPreOrder.get().getCustomerPhoneNumber(),
+                    "Unfortunately, the vendor cannot honor the order and deliver the products.");
 
             // Respond
             return ResponseEntity.ok().build();

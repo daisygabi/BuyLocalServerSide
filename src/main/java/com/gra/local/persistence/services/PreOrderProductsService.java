@@ -56,6 +56,10 @@ public class PreOrderProductsService {
         return getPreOrdersRepository().save(preOrder);
     }
 
+    public boolean notifyCustomerAboutVendorsResponse(@Valid String customerPhoneNumber, String message) {
+        return getTwilioSmsApiWrapper().create(customerPhoneNumber, System.getenv("TWILIO_DEV_TEST_PHONE_NR"), message);
+    }
+
     private String[] createProductIdArray(ProductAndSelectedQuantity[] preOrderProducts) {
         String[] productIds = new String[preOrderProducts.length];
         for (int i = 0; i < preOrderProducts.length; i++) {
@@ -73,11 +77,11 @@ public class PreOrderProductsService {
     }
 
     public Optional<PreOrders> findAcceptedUrl(String uuid) {
-        return getPreOrdersRepository().findAcceptedUrl(getClientBaseUrlPath() + "accept/" + uuid);
+        return getPreOrdersRepository().findAcceptedUrl(getClientBaseUrlPath() + "pre-order/accept/" + uuid);
     }
 
     public Optional<PreOrders> findDeniedLink(String uuid) {
-        return getPreOrdersRepository().findDeniedUrl(getClientBaseUrlPath() + "deny/" + uuid);
+        return getPreOrdersRepository().findDeniedUrl(getClientBaseUrlPath() + "pre-order/deny/" + uuid);
     }
 
     public void updateStatusToAccepted(Long preOrderId) {
