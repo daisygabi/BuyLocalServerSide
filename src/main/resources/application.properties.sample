@@ -22,3 +22,6 @@ spring.mvc.dispatch-options-request=true
 BASE_URL=http://localhost:8080
 BASIC_URL_PATH=http://localhost:8080/api/v1/
 CLIENT_BASIC_URL_PATH=http://localhost:3000/
+
+TWILIO_ACCOUNT_SID=sid_here
+TWILIO_AUTH_TOKEN=token_here
