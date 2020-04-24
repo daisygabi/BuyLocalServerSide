@@ -13,4 +13,5 @@ public class ProductAndSelectedQuantity {
     private Long productId;
     private String productName;
     private String selectedQuantity;
+    private String quantityType;
 }

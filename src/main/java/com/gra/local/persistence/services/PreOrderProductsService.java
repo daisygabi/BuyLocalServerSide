@@ -92,13 +92,13 @@ public class PreOrderProductsService {
 
     private String constructSmsMessage(@Valid @NonNull ProductAndSelectedQuantity[] products, PreOrders preOrder) {
         StringBuffer messageBuffer = new StringBuffer();
-        messageBuffer.append("You have an order for:");
+        messageBuffer.append("BuyFoodLocally! You have a new order:\n");
         for (int i = 0; i < products.length; i++) {
-            messageBuffer.append(i).append(": ").append(products[i].getProductName());
-            messageBuffer.append(products[i].getSelectedQuantity());
-            messageBuffer.append("Accept link: " + preOrder.getAcceptLink());
-            messageBuffer.append("Deny link: " + preOrder.getDenyLink());
+            messageBuffer.append("\n"+products[i].getProductName() + ": ");
+            messageBuffer.append(products[i].getSelectedQuantity() + " " + products[i].getQuantityType());
         }
+        messageBuffer.append("\nAccept link: " + preOrder.getAcceptLink());
+        messageBuffer.append("\nDeny link: " + preOrder.getDenyLink());
         return messageBuffer.toString();
     }
 
