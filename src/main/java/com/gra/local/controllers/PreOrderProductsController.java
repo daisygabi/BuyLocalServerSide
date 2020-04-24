@@ -36,7 +36,7 @@ public class PreOrderProductsController {
                 // Send SMS to vendor
                 preOrderProductsService.sendOrderDetailsBySmsToVendors(customerPhoneNumber, data.getProducts(), preOrder.getId());
             }
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok(orderedProducts);
         } catch (Exception ex) {
             throw new CustomException("Error sending vendors sms with order details", HttpStatus.BAD_REQUEST, ex);
         }
