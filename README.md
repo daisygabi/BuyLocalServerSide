@@ -18,11 +18,11 @@ Steps for getting started with it in Windows:
   
   - CLIENT_BASIC_URL_PATH=http://localhost:3000/
   
-  - TWILIO_ACCOUNT_SID=AC8e1ea9ab738cf34ad7c0bb0e505c6653
+  - TWILIO_ACCOUNT_SID=from twilio console
   
-  - TWILIO_AUTH_TOKEN=f2ca83be4b2ee214e62641b83e16ffc2
+  - TWILIO_AUTH_TOKEN= from twilio console
   
-  - TWILIO_AUTH_TOKEN: from twilio console
+  - TWILIO_AUTH_TOKEN= from twilio console
   
   - TWILIO_ACCOUNT_SID: from twilio console
 3. Import/Open your project in your editor
